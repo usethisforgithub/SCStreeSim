@@ -86,7 +86,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		g2.fillRect(0, 0, this.getWidth(), this.getHeight());
 				
 		if(ghostTrajBuild != null){
-			ghostTrajBuild.setColor(Color.red);
+			//ghostTrajBuild.setColor(Color.green);
 			ghostTrajBuild.draw(g2);
 		}
 		
@@ -95,8 +95,9 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		g2.fillRect(0, 0, 400, 900);
 		
 		//draws the trajectories in the map
-		for(Trajectory e : map){
-			e.draw(g2);
+		for(int i = 0; i < map.size(); i++){
+			map.get(i).setColor(Color.black);
+			map.get(i).draw(g2);
 		}
 		
 		
@@ -210,6 +211,29 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
+		if(ghostTrajBuild!= null){
+		boolean overLap = false;
+		
+		for(int i = 0; i < map.size(); i++){
+			if(ghostTrajBuild.overlaps(map.get(i))){
+				overLap = true;
+			}
+		}
+		
+		if(overLap){
+			ghostTrajBuild.setColor(Color.red);
+		}else{
+			ghostTrajBuild.setColor(Color.green);
+		}
+		
+		
+		if(ghostTrajBuild.isReady() && !overLap){
+			ghostTrajBuild.setColor(Color.black);
+			map.add(ghostTrajBuild);
+			ghostTrajBuild = null;
+		}
+		
+	}
 	}
 
 	@Override
@@ -233,6 +257,8 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				double startingX = f.getVertex().getX()+(trajSize/2)*hCorrector*Math.cos(trigAngle);
 				double startingY = f.getVertex().getY()+(trajSize/2)*vCorrector*Math.sin(trigAngle);
 				ghostTrajBuild = new Trajectory(new Coordinate(startingX+hCorrector*adjustRadius*Math.cos(trigAngle), startingY +vCorrector* adjustRadius*Math.sin(trigAngle)),1,trajSize);
+				
+				ghostTrajBuild.setReady(true);
 			}
 		}
 	}
@@ -240,7 +266,6 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
 		
 		for(Trajectory f : map){
 			if(f.onBorder(new Coordinate(e.getX(),e.getY()))){
@@ -261,6 +286,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				double startingX = f.getVertex().getX()+(trajSize/2)*hCorrector*Math.cos(trigAngle);
 				double startingY = f.getVertex().getY()+(trajSize/2)*vCorrector*Math.sin(trigAngle);
 				ghostTrajBuild = new Trajectory(new Coordinate(startingX+hCorrector*adjustRadius*Math.cos(trigAngle), startingY +vCorrector* adjustRadius*Math.sin(trigAngle)),1,trajSize);
+				ghostTrajBuild.setReady(true);
 			}
 		}
 	}

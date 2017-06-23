@@ -13,11 +13,12 @@ public class Trajectory {
 	private Arc arc2;
 	private Arc arc3;
 	private Arc arc4;
+	private boolean ghostReady;
 	
 	public Trajectory(Coordinate v, int dir, int s)
 	{
 		
-		
+		ghostReady = false;
 		arc1 = new Arc(this,1);
 		arc2 = new Arc(this,2);
 		arc3 = new Arc(this,3);
@@ -49,6 +50,14 @@ public class Trajectory {
 	
 	public void setArc4(Arc a){
 		arc4 = a;
+	}
+	
+	public void setReady(boolean b){
+		ghostReady = b;
+	}
+	
+	public boolean isReady(){
+		return ghostReady;
 	}
 	
 	public Arc getArc1(){
@@ -93,13 +102,24 @@ public class Trajectory {
 		return bots;
 	}
 	
+	public boolean overlaps(Trajectory t){
+		double centerX = vertex.getX();
+		double centerY = vertex.getY();
+		double leg1 = Math.abs(centerX - t.getVertex().getX());
+		double leg2 = Math.abs(centerY - t.getVertex().getY());
+		double hypotenuse = Math.sqrt(leg1 * leg1 + leg2 * leg2);
+		return hypotenuse < sizeT ;
+	}
+	
 	public boolean contains(Coordinate c){
 		double centerX = vertex.getX();
 		double centerY = vertex.getY();
+		int adjustRadius = sizeT/2 + sizeT/6;
 		double leg1 = Math.abs(centerX - c.getX());
 		double leg2 = Math.abs(centerY - c.getY());
 		double hypotenuse = Math.sqrt(leg1 * leg1 + leg2 * leg2);
-		return hypotenuse < sizeT / 2;
+		
+		return hypotenuse < 2*adjustRadius;
 	}
 	
 	public double getTrigAngle(Coordinate c){
