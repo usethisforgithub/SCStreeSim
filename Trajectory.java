@@ -102,6 +102,38 @@ public class Trajectory {
 		return hypotenuse < sizeT / 2;
 	}
 	
+	public double getTrigAngle(Coordinate c){
+		double centerX = vertex.getX();
+		double centerY = vertex.getY();
+		double leg1 = Math.abs(centerX - c.getX());
+		double leg2 = Math.abs(centerY - c.getY());
+		double hypotenuse = Math.sqrt(leg1 * leg1 + leg2 * leg2);
+		return Math.atan(leg2/leg1);
+	}
+	
+	public double hDis(Coordinate c){
+		double centerX = vertex.getX();
+		double leg1 = centerX - c.getX();
+		return leg1;
+	}
+	
+	public double vDis(Coordinate c){
+		double centerY = vertex.getY();
+		double leg2 = centerY - c.getY();
+		return leg2;
+	}
+	
+	public boolean onBorder(Coordinate c){
+		double centerX = vertex.getX();
+		double centerY = vertex.getY();
+		double leg1 = Math.abs(centerX - c.getX());
+		double leg2 = Math.abs(centerY - c.getY());
+		double hypotenuse = Math.sqrt(leg1 * leg1 + leg2 * leg2);
+		return Math.abs(hypotenuse - sizeT/2)  <= 10;
+	}
+	
+	
+	
 	public void draw(Graphics2D g2)
 	{
 		g2.setColor(arc1.getColor());

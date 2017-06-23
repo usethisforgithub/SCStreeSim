@@ -24,7 +24,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	private Image imgBuffer;
 	private final int windowSizeX = 1600;
 	private final int windowSizeY = 900;
-	private Trajectory mouseTraj;
+	private Trajectory ghostTrajBuild;
 	
 	//SCS stuff
 	private int trajSize;
@@ -40,7 +40,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		trajSize = 100;
 		map = new ArrayList<Trajectory>();
 		map.add(new Trajectory(new Coordinate(1000,450), 1, trajSize));
-		mouseTraj = null;
+		ghostTrajBuild = null;
 		
 	
 		//more window stuff
@@ -85,25 +85,20 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		g2.setColor(Color.white);
 		g2.fillRect(0, 0, this.getWidth(), this.getHeight());
 				
+		if(ghostTrajBuild != null){
+			ghostTrajBuild.setColor(Color.red);
+			ghostTrajBuild.draw(g2);
+		}
 		
+		//draws menu background
+		g2.setColor(Color.LIGHT_GRAY);
+		g2.fillRect(0, 0, 400, 900);
 		
+		//draws the trajectories in the map
 		for(Trajectory e : map){
 			e.draw(g2);
 		}
 		
-		
-		
-		//draws screen divider
-		//g2.setStroke(new BasicStroke(5));
-		g2.setColor(Color.gray);
-		g2.drawLine(400, 0, 400, 900);
-		
-		if(mouseTraj != null){
-			mouseTraj.setColor(Color.red);
-			mouseTraj.draw(g2);
-		}
-		
-	
 		
 			
 		
@@ -219,17 +214,54 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-		if(e.getX() >= 400 && e.getX() <= windowSizeX && e.getY() >= 0 && e.getY() <= windowSizeY ){
-			mouseTraj = new Trajectory(new Coordinate(e.getX(),e.getY()), 1, trajSize);
+		for(Trajectory f : map){
+			if(f.onBorder(new Coordinate(e.getX(),e.getY()))){
+				double hDis = f.hDis(new Coordinate(e.getX(),e.getY()));
+				double vDis = f.vDis(new Coordinate(e.getX(),e.getY()));
+				double trigAngle = f.getTrigAngle(new Coordinate(f.getVertex().getX() - hDis - (hDis/Math.abs(hDis))*(trajSize/6), f.getVertex().getY() - vDis - (vDis/Math.abs(vDis))*trajSize/6));
+				double adjustRadius = trajSize/2 + trajSize/6;
+				double hCorrector = -1;
+				if(hDis < 0){
+					hCorrector = 1;
+				}
+				
+				double vCorrector = -1;
+				if(vDis < 0){
+					vCorrector = 1;
+				}
+				
+				double startingX = f.getVertex().getX()+(trajSize/2)*hCorrector*Math.cos(trigAngle);
+				double startingY = f.getVertex().getY()+(trajSize/2)*vCorrector*Math.sin(trigAngle);
+				ghostTrajBuild = new Trajectory(new Coordinate(startingX+hCorrector*adjustRadius*Math.cos(trigAngle), startingY +vCorrector* adjustRadius*Math.sin(trigAngle)),1,trajSize);
+			}
 		}
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if(e.getX() >= 400 && e.getX() <= windowSizeX && e.getY() >= 0 && e.getY() <= windowSizeY ){
-			mouseTraj = new Trajectory(new Coordinate(e.getX(),e.getY()), 1, trajSize);
+		
+		
+		for(Trajectory f : map){
+			if(f.onBorder(new Coordinate(e.getX(),e.getY()))){
+				double hDis = f.hDis(new Coordinate(e.getX(),e.getY()));
+				double vDis = f.vDis(new Coordinate(e.getX(),e.getY()));
+				double trigAngle = f.getTrigAngle(new Coordinate(f.getVertex().getX() - hDis - (hDis/Math.abs(hDis))*(trajSize/6), f.getVertex().getY() - vDis - (vDis/Math.abs(vDis))*trajSize/6));
+				double adjustRadius = trajSize/2 + trajSize/6;
+				double hCorrector = -1;
+				if(hDis < 0){
+					hCorrector = 1;
+				}
+				
+				double vCorrector = -1;
+				if(vDis < 0){
+					vCorrector = 1;
+				}
+				
+				double startingX = f.getVertex().getX()+(trajSize/2)*hCorrector*Math.cos(trigAngle);
+				double startingY = f.getVertex().getY()+(trajSize/2)*vCorrector*Math.sin(trigAngle);
+				ghostTrajBuild = new Trajectory(new Coordinate(startingX+hCorrector*adjustRadius*Math.cos(trigAngle), startingY +vCorrector* adjustRadius*Math.sin(trigAngle)),1,trajSize);
+			}
 		}
 	}
 
