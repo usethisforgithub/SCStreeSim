@@ -108,7 +108,7 @@ public class Trajectory {
 		double leg1 = Math.abs(centerX - t.getVertex().getX());
 		double leg2 = Math.abs(centerY - t.getVertex().getY());
 		double hypotenuse = Math.sqrt(leg1 * leg1 + leg2 * leg2);
-		return hypotenuse < sizeT ;
+		return hypotenuse < sizeT + sizeT/6;
 	}
 	
 	public boolean contains(Coordinate c){
@@ -122,26 +122,6 @@ public class Trajectory {
 		return hypotenuse < 2*adjustRadius;
 	}
 	
-	public double getTrigAngle(Coordinate c){
-		double centerX = vertex.getX();
-		double centerY = vertex.getY();
-		double leg1 = Math.abs(centerX - c.getX());
-		double leg2 = Math.abs(centerY - c.getY());
-		double hypotenuse = Math.sqrt(leg1 * leg1 + leg2 * leg2);
-		return Math.atan(leg2/leg1);
-	}
-	
-	public double hDis(Coordinate c){
-		double centerX = vertex.getX();
-		double leg1 = centerX - c.getX();
-		return leg1;
-	}
-	
-	public double vDis(Coordinate c){
-		double centerY = vertex.getY();
-		double leg2 = centerY - c.getY();
-		return leg2;
-	}
 	
 	public boolean onBorder(Coordinate c){
 		double centerX = vertex.getX();
