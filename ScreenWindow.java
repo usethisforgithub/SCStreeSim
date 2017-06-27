@@ -252,6 +252,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		// TODO Auto-generated method stub
 		boolean ghostControl = false;
 		for(int i = 0; i < map.size(); i++){
+			
 			if(map.get(i).onBorder(new Coordinate(e.getX(),e.getY()))){
 				
 				
@@ -261,13 +262,36 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				double adjustRadius = trajSize/2 + trajSize/6;
 				double startingX = map.get(i).getVertex().getX()+(trajSize/2)*Math.cos((Math.PI/180)*trigAngle);
 				double startingY = map.get(i).getVertex().getY()-(trajSize/2)*Math.sin((Math.PI/180)*trigAngle);
-				System.out.println(trigAngle);
 				ghostTrajBuild = new Trajectory(new Coordinate(startingX+adjustRadius*Math.cos((Math.PI/180)*trigAngle), startingY -adjustRadius*Math.sin((Math.PI/180)*trigAngle)),1,trajSize);
 				//ghostTrajBuild.setReady(true);
 				ghostControl = true;
 			}
+			
+			
 			}
 		
+		if(!ghostControl){
+			
+				ghostTrajBuild = null;
+			
+		}
+		
+		
+		if(ghostTrajBuild != null){
+			boolean overLap = false;
+			for(Trajectory t : map){
+				if(ghostTrajBuild.overlaps(t)){
+					overLap = true;
+				}
+			}
+			
+			
+			if(!overLap){
+				ghostTrajBuild.setColor(Color.green);
+			}else{
+				ghostTrajBuild.setColor(Color.red);
+			}
+			}
 		
 		
 		}
