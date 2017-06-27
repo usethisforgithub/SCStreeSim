@@ -2,6 +2,7 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -93,6 +94,173 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		//draws menu background
 		g2.setColor(Color.LIGHT_GRAY);
 		g2.fillRect(0, 0, 400, 900);
+		
+		//draws Toolbar
+		g2.setColor(Color.black);
+		g2.setFont(new Font("Callibri", Font.PLAIN, 18));
+		g2.drawString("Toolbar", 160, 60);
+		
+		//draws build mode button
+		if(true){
+			
+			g2.setColor(Color.green);
+			g2.fillRect(30, 80, 40, 40);
+			g2.setColor(Color.black);
+			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+			g2.drawString("Build Mode", 85, 105);
+		}else{
+			
+			g2.setColor(Color.red);
+			g2.fillRect(30, 80, 40, 40);
+			g2.setColor(Color.black);
+			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+			g2.drawString("Build Mode", 85, 105);
+		}
+		
+		//draws pause button
+		if(true){
+			
+			g2.setColor(Color.green);
+			g2.fillRect(30, 140, 40, 40);
+			g2.setColor(Color.black);
+			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+			g2.drawString("Pause", 85, 165);
+		}else{
+			
+			g2.setColor(Color.red);
+			g2.fillRect(30, 140, 40, 40);
+			g2.setColor(Color.black);
+			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+			g2.drawString("Build Mode", 85, 165);
+		}
+		
+		//draws kill drone button
+		if(true){
+			
+			g2.setColor(Color.green);
+			g2.fillRect(30, 200, 40, 40);
+			g2.setColor(Color.black);
+			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+			g2.drawString("Remove Drones", 85, 225);
+		}else{
+			
+			g2.setColor(Color.red);
+			g2.fillRect(30, 200, 40, 40);
+			g2.setColor(Color.black);
+			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+			g2.drawString("Remove Drones", 85, 225);
+		}
+		
+		//draws uncovering resilience button
+				if(true){
+					
+					g2.setColor(Color.green);
+					g2.fillRect(30, 260, 40, 40);
+					g2.setColor(Color.black);
+					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+					g2.drawString("Show Uncovering Resilience", 85, 285);
+				}else{
+					
+					g2.setColor(Color.red);
+					g2.fillRect(30, 260, 40, 40);
+					g2.setColor(Color.black);
+					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+					g2.drawString("Uncovering Resilience", 85, 285);
+				}
+				
+		//draws isolation button
+				if(true){
+					
+					g2.setColor(Color.green);
+					g2.fillRect(30, 320, 40, 40);
+					g2.setColor(Color.black);
+					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+					g2.drawString("Show Isolation", 85, 345);
+				}else{
+					
+					g2.setColor(Color.red);
+					g2.fillRect(30, 320, 40, 40);
+					g2.setColor(Color.black);
+					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+					g2.drawString("Isolation", 85, 345);
+				}
+				
+		//draws reset map button
+				if(true){
+					
+					g2.setColor(Color.green);
+					g2.fillRect(30, 440, 40, 40);
+					g2.setColor(Color.black);
+					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+					g2.drawString("Reset Map", 85, 405);
+				}else{
+					
+					g2.setColor(Color.red);
+					g2.fillRect(30, 440, 40, 40);
+					g2.setColor(Color.black);
+					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+					g2.drawString("Isolation", 85, 405);
+				}
+				
+		//draws save map button
+				if(true){
+					
+					g2.setColor(Color.green);
+					g2.fillRect(30, 500, 40, 40);
+					g2.setColor(Color.black);
+					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+					g2.drawString("Save Map", 85, 465);
+				}else{
+					
+					g2.setColor(Color.red);
+					g2.fillRect(30, 500, 40, 40);
+					g2.setColor(Color.black);
+					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+					g2.drawString("Isolation", 85, 465);
+				}
+				
+		//draws add drone button
+				if(true){
+					
+					g2.setColor(Color.green);
+					g2.fillRect(30, 380, 40, 40);
+					g2.setColor(Color.black);
+					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+					g2.drawString("Add drones", 85, 525);
+				}else{
+					
+					g2.setColor(Color.red);
+					g2.fillRect(30, 380, 40, 40);
+					g2.setColor(Color.black);
+					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+					g2.drawString("Isolation", 85, 525);
+				}			
+				
+		//draws laod map button
+				if(true){
+					
+					g2.setColor(Color.green);
+					g2.fillRect(30, 560, 40, 40);
+					g2.setColor(Color.black);
+					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+					g2.drawString("Load Map", 85, 585);
+				}else{
+					
+					g2.setColor(Color.red);
+					g2.fillRect(30, 560, 40, 40);
+					g2.setColor(Color.black);
+					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+					g2.drawString("Isolation", 85, 585);
+				}
+		
+		//draws help button
+			g2.setColor(Color.white);
+			g2.fillRect(370, 40, 20, 20);
+			g2.setColor(Color.black);
+			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+			g2.drawString("?", 375, 55);
+
+			
 		
 		//draws the trajectories in the map
 		for(int i = 0; i < map.size(); i++){
@@ -204,6 +372,11 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 
 	@Override
 	public void mousePressed(MouseEvent arg0) {
+		
+		//if click is inside the button, toggles build mode
+			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 80 && arg0.getY() <= 120)){
+				//paused = !paused;
+			}
 		
 		if(ghostTrajBuild != null){
 		boolean overLap = false;
