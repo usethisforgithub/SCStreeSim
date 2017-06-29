@@ -445,8 +445,8 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 								newDir = -1;
 							}
 							
-							map.add(new Trajectory(new Coordinate(existingTraj.getVertex().getX() + 4/3*(existingTraj.getSize())*Math.cos(angle) + existingTraj.getSize() / 3, existingTraj.getVertex().getY()+ 4/3*(existingTraj.getSize())*Math.sin(angle)+ 1/3*existingTraj.getSize()), newDir, existingTraj.getSize(), tempInt));
-							
+							map.add(new Trajectory(new Coordinate(existingTraj.getVertex().getX() + (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.cos((Math.PI/180)*angle),existingTraj.getVertex().getY() + (existingTraj.getSize()-(existingTraj.getSize()/6))*Math.sin((Math.PI/180)*angle)), newDir, existingTraj.getSize(), trajIDIndex));
+							trajIDIndex++;
 						}
 						else {
 							System.out.println("Field was left empty. New trajectory was not added.");
@@ -484,70 +484,11 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		for(int i = 0; i < map.size(); i++){
-			if(map.get(i).onBorder(new Coordinate(e.getX(),e.getY()))){
-				
-				
-				//colors
-				
-				int trigAngle = AngleUtilities.getAngle(map.get(i).getVertex(), new Coordinate(e.getX(),e.getY()));
-				double adjustRadius = trajSize/2 + trajSize/6;
-				double startingX = map.get(i).getVertex().getX()+(trajSize/2)*Math.cos((Math.PI/180)*trigAngle);
-				double startingY = map.get(i).getVertex().getY()-(trajSize/2)*Math.sin((Math.PI/180)*trigAngle);
-				System.out.println(trigAngle);
-				ghostTrajBuild = new Trajectory(new Coordinate(startingX+adjustRadius*Math.cos((Math.PI/180)*trigAngle), startingY -adjustRadius*Math.sin((Math.PI/180)*trigAngle)),1,trajSize, -1);
-				
-			}
-			}
+	
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-		boolean ghostControl = false;
-		for(int i = 0; i < map.size(); i++){
-			
-			if(map.get(i).onBorder(new Coordinate(e.getX(),e.getY()))){
-				
-				
-				
-				
-				int trigAngle = AngleUtilities.getAngle(map.get(i).getVertex(), new Coordinate(e.getX(),e.getY()));
-				double adjustRadius = trajSize/2 + trajSize/6;
-				double startingX = map.get(i).getVertex().getX()+(trajSize/2)*Math.cos((Math.PI/180)*trigAngle);
-				double startingY = map.get(i).getVertex().getY()-(trajSize/2)*Math.sin((Math.PI/180)*trigAngle);
-				ghostTrajBuild = new Trajectory(new Coordinate(startingX+adjustRadius*Math.cos((Math.PI/180)*trigAngle), startingY -adjustRadius*Math.sin((Math.PI/180)*trigAngle)),1,trajSize,-1);
-				//ghostTrajBuild.setReady(true);
-				ghostControl = true;
-			}
-			
-			
-			}
-		
-		if(!ghostControl){
-			
-				ghostTrajBuild = null;
-			
-		}
-		
-		
-		if(ghostTrajBuild != null){
-			boolean overLap = false;
-			for(Trajectory t : map){
-				if(ghostTrajBuild.overlaps(t)){
-					overLap = true;
-				}
-			}
-			
-			
-			if(!overLap){
-				ghostTrajBuild.setColor(Color.green);
-			}else{
-				ghostTrajBuild.setColor(Color.red);
-			}
-			}
-		
-		
 		}
 		
 	}
