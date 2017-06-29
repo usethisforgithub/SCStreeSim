@@ -16,6 +16,13 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 
 
 public class ScreenWindow extends Frame implements WindowListener, Runnable, KeyListener, MouseListener, MouseMotionListener{
@@ -31,11 +38,14 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	private int trajSize;
 	private ArrayList<Trajectory> map;
 	
+	//toggles
+	private boolean addTrajToggle;
 	
 
 	
 	public ScreenWindow(){
 		super();
+		addTrajToggle = false;
 		
 		//adds the first trajectory to the map
 		trajSize = 100;
@@ -100,21 +110,21 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		g2.setFont(new Font("Callibri", Font.PLAIN, 18));
 		g2.drawString("Toolbar", 160, 60);
 		
-		//draws build mode button
-		if(true){
-			
-			g2.setColor(Color.green);
-			g2.fillRect(30, 80, 40, 40);
-			g2.setColor(Color.black);
-			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-			g2.drawString("Build Mode", 85, 105);
-		}else{
+		//draws add trajectory button
+		if(addTrajToggle){
 			
 			g2.setColor(Color.red);
 			g2.fillRect(30, 80, 40, 40);
 			g2.setColor(Color.black);
 			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-			g2.drawString("Build Mode", 85, 105);
+			g2.drawString("Add In Progress", 85, 105);
+		}else{
+			
+			g2.setColor(Color.green);
+			g2.fillRect(30, 80, 40, 40);
+			g2.setColor(Color.black);
+			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+			g2.drawString("Add Trajectory", 85, 105);
 		}
 		
 		//draws pause button
@@ -373,9 +383,57 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		
-		//if click is inside the button, toggles build mode
+		//add trajectory button
 			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 80 && arg0.getY() <= 120)){
-				//paused = !paused;
+				if(!addTrajToggle){
+					addTrajToggle = true;
+					
+					JTextField aField = new JTextField(5);
+					JTextField bField = new JTextField(5);
+					JTextField cField = new JTextField(5);
+					JTextField dField = new JTextField(5);
+
+					JPanel myPanel = new JPanel();
+					myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
+
+					myPanel.add(new JLabel("Enter Angle:"));
+					myPanel.add(aField);
+
+					myPanel.add(Box.createVerticalStrut(15));
+
+					/*myPanel.add(new JLabel("Enter number of columns:"));
+					myPanel.add(bField);
+
+					myPanel.add(Box.createVerticalStrut(15));
+
+					myPanel.add(new JLabel("Enter initial direction of first trajectory"));
+					myPanel.add(new JLabel("-1 (clockwise) or 1 (counterclockwise):"));
+					myPanel.add(cField);
+
+					myPanel.add(Box.createVerticalStrut(15));
+
+					myPanel.add(new JLabel("Enter initial angle of first drone"));
+					myPanel.add(new JLabel("in radians between (0.00 - 6.28):"));
+					myPanel.add(dField); */
+
+					int result = JOptionPane.showConfirmDialog(null, myPanel, " Enter Values For New SCS Simulation", JOptionPane.OK_CANCEL_OPTION);
+					
+					if (result == JOptionPane.OK_OPTION) {
+						String temp1 = aField.getText();
+						String temp2 = bField.getText();
+						String temp3 = cField.getText();
+						String temp4 = dField.getText();
+
+						if (!temp1.equals("")) {
+							double angle = Double.parseDouble(temp1);
+							//ScreenWindow window = new ScreenWindow(r, c, d, a);
+							//new Thread(window).start();
+						}
+						else {
+							System.out.println("Field was left empty. New trajectory was not added.");
+						}
+					}
+				}
 			}
 		
 		if(ghostTrajBuild != null){
