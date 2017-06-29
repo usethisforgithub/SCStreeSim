@@ -421,6 +421,8 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					myPanel.add(dField); */
 
 					int result = JOptionPane.showConfirmDialog(null, myPanel, " Enter Values For New SCS Simulation", JOptionPane.OK_CANCEL_OPTION);
+					Trajectory existingTraj = null;
+					int tempInt = 0;
 					
 					if (result == JOptionPane.OK_OPTION) {
 						String temp1 = aField.getText();
@@ -429,16 +431,21 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 
 						if (!temp1.equals("") && !temp2.equals("")) {
 							double angle = Double.parseDouble(temp1);
-							Trajectory existingTraj;
+							
 							
 							for(Trajectory t : map){
-								int tempInt = Integer.parseInt(temp2);
+								tempInt = Integer.parseInt(temp2);
 								if(tempInt == t.getID()){
 									existingTraj = t;
 								}
 							}
 							
-							map.add(new Trajectory(new Coordinate(existingTraj.getVertex().getX())))
+							int newDir = 1;
+							if(existingTraj.getDirection() > 0){
+								newDir = -1;
+							}
+							
+							map.add(new Trajectory(new Coordinate(existingTraj.getVertex().getX() + 4/3*(existingTraj.getSize())*Math.cos(angle) + existingTraj.getSize() / 3, existingTraj.getVertex().getY()+ 4/3*(existingTraj.getSize())*Math.sin(angle)+ 1/3*existingTraj.getSize()), newDir, existingTraj.getSize(), tempInt));
 							
 						}
 						else {
