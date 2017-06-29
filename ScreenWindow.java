@@ -445,7 +445,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 								newDir = -1;
 							}
 							
-							map.add(new Trajectory(new Coordinate(existingTraj.getVertex().getX() + (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.cos((Math.PI/180)*angle),existingTraj.getVertex().getY() + (existingTraj.getSize()-(existingTraj.getSize()/6))*Math.sin((Math.PI/180)*angle)), newDir, existingTraj.getSize(), trajIDIndex));
+							map.add(new Trajectory(new Coordinate(existingTraj.getVertex().getX() + (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.cos((Math.PI/180)*angle), existingTraj.getVertex().getY() - (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.sin((Math.PI/180)*angle)), newDir, existingTraj.getSize(), trajIDIndex));
 							trajIDIndex++;
 						}
 						else {

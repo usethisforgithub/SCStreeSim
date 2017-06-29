@@ -153,6 +153,8 @@ public class Trajectory {
 		
 		g2.setColor(arc4.getColor());
 		g2.drawArc(vertex.getX()- sizeT / 2, vertex.getY()- sizeT / 2, sizeT, sizeT, 270, 90);
+		
+		g2.drawString("" + trajID, vertex.getX(), vertex.getY());;
 		//if(direction == 1){
 		//	g2.setColor(Color.blue);
 		//}else{
