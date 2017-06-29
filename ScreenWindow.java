@@ -28,6 +28,7 @@ import javax.swing.JTextField;
 public class ScreenWindow extends Frame implements WindowListener, Runnable, KeyListener, MouseListener, MouseMotionListener{
 
 	//window stuff
+	private int trajIDIndex;
 	private boolean isRunning,isDone;
 	private Image imgBuffer;
 	private final int windowSizeX = 1600;
@@ -45,12 +46,13 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	
 	public ScreenWindow(){
 		super();
+		trajIDIndex = 1;
 		addTrajToggle = false;
 		
 		//adds the first trajectory to the map
 		trajSize = 100;
 		map = new ArrayList<Trajectory>();
-		map.add(new Trajectory(new Coordinate(1000,450), 1, trajSize));
+		map.add(new Trajectory(new Coordinate(1000,450), 1, trajSize,0));
 		ghostTrajBuild = null;
 		
 	
@@ -246,7 +248,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					g2.drawString("Isolation", 85, 525);
 				}			
 				
-		//draws laod map button
+		//draws load map button
 				if(true){
 					
 					g2.setColor(Color.green);
@@ -401,11 +403,13 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 
 					myPanel.add(Box.createVerticalStrut(15));
 
-					/*myPanel.add(new JLabel("Enter number of columns:"));
+					myPanel.add(new JLabel("Existing Trajectory's ID:"));
 					myPanel.add(bField);
 
 					myPanel.add(Box.createVerticalStrut(15));
 
+					
+					/*
 					myPanel.add(new JLabel("Enter initial direction of first trajectory"));
 					myPanel.add(new JLabel("-1 (clockwise) or 1 (counterclockwise):"));
 					myPanel.add(cField);
@@ -421,18 +425,30 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					if (result == JOptionPane.OK_OPTION) {
 						String temp1 = aField.getText();
 						String temp2 = bField.getText();
-						String temp3 = cField.getText();
-						String temp4 = dField.getText();
+						
 
-						if (!temp1.equals("")) {
+						if (!temp1.equals("") && !temp2.equals("")) {
 							double angle = Double.parseDouble(temp1);
-							//ScreenWindow window = new ScreenWindow(r, c, d, a);
-							//new Thread(window).start();
+							Trajectory existingTraj;
+							
+							for(Trajectory t : map){
+								int tempInt = Integer.parseInt(temp2);
+								if(tempInt == t.getID()){
+									existingTraj = t;
+								}
+							}
+							
+							map.add(new Trajectory(new Coordinate(existingTraj.getVertex().getX())))
+							
 						}
 						else {
 							System.out.println("Field was left empty. New trajectory was not added.");
 						}
+						
 					}
+				
+					addTrajToggle = false;
+				
 				}
 			}
 		
@@ -472,7 +488,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				double startingX = map.get(i).getVertex().getX()+(trajSize/2)*Math.cos((Math.PI/180)*trigAngle);
 				double startingY = map.get(i).getVertex().getY()-(trajSize/2)*Math.sin((Math.PI/180)*trigAngle);
 				System.out.println(trigAngle);
-				ghostTrajBuild = new Trajectory(new Coordinate(startingX+adjustRadius*Math.cos((Math.PI/180)*trigAngle), startingY -adjustRadius*Math.sin((Math.PI/180)*trigAngle)),1,trajSize);
+				ghostTrajBuild = new Trajectory(new Coordinate(startingX+adjustRadius*Math.cos((Math.PI/180)*trigAngle), startingY -adjustRadius*Math.sin((Math.PI/180)*trigAngle)),1,trajSize, -1);
 				
 			}
 			}
@@ -493,7 +509,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				double adjustRadius = trajSize/2 + trajSize/6;
 				double startingX = map.get(i).getVertex().getX()+(trajSize/2)*Math.cos((Math.PI/180)*trigAngle);
 				double startingY = map.get(i).getVertex().getY()-(trajSize/2)*Math.sin((Math.PI/180)*trigAngle);
-				ghostTrajBuild = new Trajectory(new Coordinate(startingX+adjustRadius*Math.cos((Math.PI/180)*trigAngle), startingY -adjustRadius*Math.sin((Math.PI/180)*trigAngle)),1,trajSize);
+				ghostTrajBuild = new Trajectory(new Coordinate(startingX+adjustRadius*Math.cos((Math.PI/180)*trigAngle), startingY -adjustRadius*Math.sin((Math.PI/180)*trigAngle)),1,trajSize,-1);
 				//ghostTrajBuild.setReady(true);
 				ghostControl = true;
 			}

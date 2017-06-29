@@ -13,9 +13,10 @@ public class Trajectory {
 	private Arc arc2;
 	private Arc arc3;
 	private Arc arc4;
+	private int trajID;
 	private boolean ghostReady;
 	
-	public Trajectory(Coordinate v, int dir, int s)
+	public Trajectory(Coordinate v, int dir, int s, int id)
 	{
 		
 		ghostReady = false;
@@ -27,6 +28,11 @@ public class Trajectory {
 		vertex = v;
 		direction = dir;
 		sizeT = s;
+		trajID = id;
+	}
+	
+	public int getID(){
+		return trajID;
 	}
 	
 	public void setColor(Color c){
