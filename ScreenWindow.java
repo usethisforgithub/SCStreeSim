@@ -40,7 +40,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	private ArrayList<Trajectory> map;
 	
 	//toggles
-	private boolean addTrajToggle;
+	private boolean addTrajToggle, resetMapToggle;
 	
 
 	
@@ -48,6 +48,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		super();
 		trajIDIndex = 1;
 		addTrajToggle = false;
+		resetMapToggle = false;
 		
 		//adds the first trajectory to the map
 		trajSize = 100;
@@ -146,7 +147,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			g2.drawString("Build Mode", 85, 165);
 		}
 		
-		//draws kill drone button
+		//draws remove drone button
 		if(true){
 			
 			g2.setColor(Color.green);
@@ -197,21 +198,41 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					g2.drawString("Isolation", 85, 345);
 				}
 				
-		//draws reset map button
+				
+				//draws add drone button
 				if(true){
+					
+					g2.setColor(Color.green);
+					g2.fillRect(30, 380, 40, 40);
+					g2.setColor(Color.black);
+					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+					g2.drawString("Add drones", 85, 405);
+				}else{
+					
+					g2.setColor(Color.red);
+					g2.fillRect(30, 380, 40, 40);
+					g2.setColor(Color.black);
+					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+					g2.drawString("Add Drones", 85, 405);
+				}		
+				
+				
+				
+		//draws reset map button
+				if(!resetMapToggle){
 					
 					g2.setColor(Color.green);
 					g2.fillRect(30, 440, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Reset Map", 85, 405);
+					g2.drawString("Reset Map", 85, 465);
 				}else{
 					
 					g2.setColor(Color.red);
 					g2.fillRect(30, 440, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Isolation", 85, 405);
+					g2.drawString("Reset", 85, 465);
 				}
 				
 		//draws save map button
@@ -221,32 +242,17 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					g2.fillRect(30, 500, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Save Map", 85, 465);
+					g2.drawString("Save Map", 85, 525);
 				}else{
 					
 					g2.setColor(Color.red);
 					g2.fillRect(30, 500, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Isolation", 85, 465);
+					g2.drawString("Save", 85, 525);
 				}
 				
-		//draws add drone button
-				if(true){
-					
-					g2.setColor(Color.green);
-					g2.fillRect(30, 380, 40, 40);
-					g2.setColor(Color.black);
-					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Add drones", 85, 525);
-				}else{
-					
-					g2.setColor(Color.red);
-					g2.fillRect(30, 380, 40, 40);
-					g2.setColor(Color.black);
-					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Isolation", 85, 525);
-				}			
+				
 				
 		//draws load map button
 				if(true){
@@ -473,6 +479,16 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				
 					addTrajToggle = false;
 				
+				}
+			}
+			//reset map button
+			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 440 && arg0.getY() <= 480)){
+				System.out.println("dsgfsaggag");
+				if(!resetMapToggle){
+					resetMapToggle = true;
+					map = new ArrayList<Trajectory>();
+					map.add(new Trajectory(new Coordinate(1000,450), 1, trajSize,0));
+					resetMapToggle = false;
 				}
 			}
 		
