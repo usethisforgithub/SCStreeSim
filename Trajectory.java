@@ -110,11 +110,19 @@ public class Trajectory {
 	
 	public boolean overlaps(Trajectory t){
 		double centerX = vertex.getX();
+		System.out.println("X1: " + centerX);
 		double centerY = vertex.getY();
+		System.out.println("y1: " + centerY);
 		double leg1 = Math.abs(centerX - t.getVertex().getX());
+		System.out.println("x2: " + t.getVertex().getX());
 		double leg2 = Math.abs(centerY - t.getVertex().getY());
+		System.out.println("y2: " + t.getVertex().getY());
+		System.out.println("leg1: " + leg1);
+		System.out.println("leg2: " + leg2);
 		double hypotenuse = Math.sqrt(leg1 * leg1 + leg2 * leg2);
-		return hypotenuse < sizeT + sizeT/6;
+		System.out.println("HYPONTENUSE: " + hypotenuse);
+		System.out.println("check: " + (sizeT + sizeT/6));
+		return Math.ceil(hypotenuse) < (sizeT + sizeT/6);
 	}
 	
 	public boolean contains(Coordinate c){
