@@ -134,7 +134,7 @@ public class Trajectory {
 		
 		double hypotenuse = Math.sqrt(leg1 * leg1 + leg2 * leg2);
 		
-		return Math.ceil(hypotenuse) == (sizeT + sizeT/6);
+		return Math.ceil(hypotenuse) >= (sizeT + sizeT/6) -1 && Math.ceil(hypotenuse) <= (sizeT + sizeT/6) +1;
 	}
 	
 	public boolean contains(Coordinate c){
@@ -153,11 +153,12 @@ public class Trajectory {
 		
 		double centerY = vertex.getY();
 		
-		double leg1 = -1*(centerX - t.getVertex().getX());
+		double leg1 = (centerX - t.getVertex().getX());
 		
 		double leg2 = -1*(centerY - t.getVertex().getY());
 		
 		int tempAng = (int)((180/Math.PI)*Math.atan(leg2/leg1));
+		System.out.println(tempAng);
 		tempAng = (int)AngleUtilities.coterminal(tempAng);
 		
 		System.out.println("Angle: " + tempAng);

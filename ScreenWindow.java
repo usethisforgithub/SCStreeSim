@@ -497,11 +497,12 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			}
 			//reset map button
 			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 440 && arg0.getY() <= 480)){
-				System.out.println("dsgfsaggag");
+				System.out.println("Map has been reset");
 				if(!resetMapToggle){
 					resetMapToggle = true;
 					map = new ArrayList<Trajectory>();
 					map.add(new Trajectory(new Coordinate(1000,450), 1, trajSize,0));
+					trajIDIndex = 1;
 					resetMapToggle = false;
 				}
 			}
