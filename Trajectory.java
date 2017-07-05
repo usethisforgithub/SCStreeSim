@@ -15,10 +15,11 @@ public class Trajectory {
 	private Arc arc4;
 	private int trajID;
 	private boolean ghostReady;
+	private ArrayList<TrajAnglePair> neighbors;
 	
 	public Trajectory(Coordinate v, int dir, int s, int id)
 	{
-		
+		neighbors = new ArrayList<TrajAnglePair>();
 		ghostReady = false;
 		arc1 = new Arc(this,1);
 		arc2 = new Arc(this,2);
@@ -110,19 +111,30 @@ public class Trajectory {
 	
 	public boolean overlaps(Trajectory t){
 		double centerX = vertex.getX();
-		System.out.println("X1: " + centerX);
+		
 		double centerY = vertex.getY();
-		System.out.println("y1: " + centerY);
+		
 		double leg1 = Math.abs(centerX - t.getVertex().getX());
-		System.out.println("x2: " + t.getVertex().getX());
+		
 		double leg2 = Math.abs(centerY - t.getVertex().getY());
-		System.out.println("y2: " + t.getVertex().getY());
-		System.out.println("leg1: " + leg1);
-		System.out.println("leg2: " + leg2);
+		
 		double hypotenuse = Math.sqrt(leg1 * leg1 + leg2 * leg2);
-		System.out.println("HYPONTENUSE: " + hypotenuse);
-		System.out.println("check: " + (sizeT + sizeT/6));
+		
 		return Math.ceil(hypotenuse) < (sizeT + sizeT/6);
+	}
+	
+	public boolean tangent(Trajectory t) {
+		double centerX = vertex.getX();
+		
+		double centerY = vertex.getY();
+		
+		double leg1 = Math.abs(centerX - t.getVertex().getX());
+		
+		double leg2 = Math.abs(centerY - t.getVertex().getY());
+		
+		double hypotenuse = Math.sqrt(leg1 * leg1 + leg2 * leg2);
+		
+		return Math.ceil(hypotenuse) == (sizeT + sizeT/6);
 	}
 	
 	public boolean contains(Coordinate c){
@@ -136,17 +148,26 @@ public class Trajectory {
 		return hypotenuse < 2*adjustRadius;
 	}
 	
-	
-	public boolean onBorder(Coordinate c){
+	public int angleFrom(Trajectory t) {
 		double centerX = vertex.getX();
+		
 		double centerY = vertex.getY();
-		double leg1 = Math.abs(centerX - c.getX());
-		double leg2 = Math.abs(centerY - c.getY());
-		double hypotenuse = Math.sqrt(leg1 * leg1 + leg2 * leg2);
-		return Math.abs(hypotenuse - sizeT/2)  <= 10;
+		
+		double leg1 = -1*(centerX - t.getVertex().getX());
+		
+		double leg2 = -1*(centerY - t.getVertex().getY());
+		
+		int tempAng = (int)((180/Math.PI)*Math.atan(leg2/leg1));
+		tempAng = (int)AngleUtilities.coterminal(tempAng);
+		
+		System.out.println("Angle: " + tempAng);
+		return 0;
+		
 	}
 	
-	
+	public void addNeighbor(TrajAnglePair tap) {
+		neighbors.add(tap);
+	}
 	
 	public void draw(Graphics2D g2)
 	{

@@ -3,7 +3,7 @@ public class AngleUtilities {
 	
 	
 	
-	public static int getAngle(Coordinate c, Coordinate a){
+	/*public static int getAngle(Coordinate c, Coordinate a){
 		double hDis = a.getX() - c.getX();
 		double vDis = c.getY() - a.getY();
 		
@@ -37,7 +37,7 @@ public class AngleUtilities {
 			tempAng = coterminal((int)tempAng);
 			return (int)tempAng;
 		}
-	}
+	}*/
 	
 	public static double coterminal(int a){
 		if(a >= 360){

@@ -468,6 +468,20 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 								map.add(newTraj);
 								trajIDIndex++;
 				
+							
+								//loop to set neighbors
+								for(int i = 0; i < map.size(); i++) {
+									if(newTraj.tangent(map.get(i))) {
+										TrajAnglePair tap1,tap2;
+										map.get(i).angleFrom(newTraj);
+										tap1 = new TrajAnglePair(map.get(i),9);
+										tap2 = new TrajAnglePair(newTraj,9);
+									}
+								}
+							
+							
+							
+							
 							}
 							
 						}
