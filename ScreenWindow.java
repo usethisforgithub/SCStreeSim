@@ -40,12 +40,13 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	private ArrayList<Trajectory> map;
 	
 	//toggles
-	private boolean addTrajToggle, resetMapToggle;
+	private boolean addTrajToggle, resetMapToggle, pauseToggle;
 	
 
 	
 	public ScreenWindow(){
 		super();
+		pauseToggle = true;
 		trajIDIndex = 1;
 		addTrajToggle = false;
 		resetMapToggle = false;
@@ -131,20 +132,20 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		}
 		
 		//draws pause button
-		if(true){
+		if(!pauseToggle){
 			
 			g2.setColor(Color.green);
 			g2.fillRect(30, 140, 40, 40);
 			g2.setColor(Color.black);
 			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-			g2.drawString("Pause", 85, 165);
+			g2.drawString("Resume", 85, 165);
 		}else{
 			
 			g2.setColor(Color.red);
 			g2.fillRect(30, 140, 40, 40);
 			g2.setColor(Color.black);
 			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-			g2.drawString("Build Mode", 85, 165);
+			g2.drawString("Pause", 85, 165);
 		}
 		
 		//draws remove drone button
@@ -518,6 +519,11 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					trajIDIndex = 1;
 					resetMapToggle = false;
 				}
+			}
+			
+			
+			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 140 && arg0.getY() <= 180)){
+				pauseToggle = !pauseToggle;
 			}
 		
 		if(ghostTrajBuild != null){
