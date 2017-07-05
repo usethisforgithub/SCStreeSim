@@ -473,9 +473,10 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 								for(int i = 0; i < map.size(); i++) {
 									if(newTraj.tangent(map.get(i))) {
 										TrajAnglePair tap1,tap2;
-										map.get(i).angleFrom(newTraj);
-										tap1 = new TrajAnglePair(map.get(i),9);
-										tap2 = new TrajAnglePair(newTraj,9);
+										tap1 = new TrajAnglePair(map.get(i),newTraj.angleFrom(map.get(i)));
+										tap2 = new TrajAnglePair(newTraj,map.get(i).angleFrom(newTraj));
+										newTraj.addNeighbor(tap1);
+										map.get(i).addNeighbor(tap2);
 									}
 								}
 							
@@ -494,6 +495,18 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					addTrajToggle = false;
 				
 				}
+				
+				//displays neighbors
+				for(int i = 0; i < map.size(); i++){
+					System.out.println("Traj #" + map.get(i).getID() + " neighbors: ");
+					for(int j = 0; j < map.get(i).getNeighbors().size(); j++){
+						System.out.println("Traj #" + map.get(i).getNeighbors().get(j).getTraj().getID() + " at " + map.get(i).getNeighbors().get(j).getAngle() + " degrees" );
+					}
+				}
+				
+				
+				
+				
 			}
 			//reset map button
 			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 440 && arg0.getY() <= 480)){

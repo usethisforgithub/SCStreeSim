@@ -154,20 +154,34 @@ public class Trajectory {
 		double centerY = vertex.getY();
 		
 		double leg1 = (centerX - t.getVertex().getX());
+		if(leg1 != 0){
+			leg1*=-1;
+		}
 		
-		double leg2 = -1*(centerY - t.getVertex().getY());
+		double leg2 = (centerY - t.getVertex().getY());
+		
 		
 		int tempAng = (int)((180/Math.PI)*Math.atan(leg2/leg1));
-		System.out.println(tempAng);
+		
 		tempAng = (int)AngleUtilities.coterminal(tempAng);
 		
-		System.out.println("Angle: " + tempAng);
-		return 0;
+		if(leg1 < 0){
+			int dif = 90 - tempAng;
+			tempAng += 2*dif;
+		}
+		
+		
+		
+		return tempAng;
 		
 	}
 	
 	public void addNeighbor(TrajAnglePair tap) {
 		neighbors.add(tap);
+	}
+	
+	public ArrayList<TrajAnglePair> getNeighbors(){
+		return neighbors;
 	}
 	
 	public void draw(Graphics2D g2)
