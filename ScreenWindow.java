@@ -81,7 +81,13 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		while(isRunning){
 			draw();
 			
-			
+			if(!pauseToggle){
+				for(int i = 0; i < listBot.size(); i++){
+					if(listBot.get(i).getDirection() == 1){
+						//listBot.get(i).setAngle(a);
+					}
+				}
+			}
 			
 			
 			
@@ -425,12 +431,11 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				myPanel.add(bField);
 
 				myPanel.add(Box.createVerticalStrut(15));
-
-				myPanel.add(new JLabel("Direction (-1 or 1):"));
+				
+				myPanel.add(new JLabel("Direction(1 or -1)"));
 				myPanel.add(cField);
 
 				myPanel.add(Box.createVerticalStrut(15));
-
 
 
 				int result = JOptionPane.showConfirmDialog(null, myPanel, " Enter Values For New SCS Simulation", JOptionPane.OK_CANCEL_OPTION);
@@ -445,7 +450,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 
 					if (!temp1.equals("") && !temp2.equals("") && !temp3.equals("")) {
 						int angle = Integer.parseInt(temp1);
-						int direction = Integer.parseInt(temp3);
+						
 						
 						for(Trajectory t : map){
 							tempInt = Integer.parseInt(temp2);
@@ -454,13 +459,15 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 							}
 						}
 						
+						int tempDir = Integer.parseInt(temp3); 
+						
 						/*
 						int newDir = 1;
 						if(existingTraj.getDirection() > 0){
 							newDir = -1;
 						}
 						*/
-						Robot tempBot = new Robot(existingTraj, ((Math.PI/180)*angle));
+						Robot tempBot = new Robot(existingTraj, ((Math.PI/180)*angle),tempDir);
 						existingTraj.addBot(tempBot);
 						listBot.add(tempBot);
 						
@@ -507,6 +514,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					myPanel.add(bField);
 
 					myPanel.add(Box.createVerticalStrut(15));
+
 					
 					/*
 					myPanel.add(new JLabel("Enter initial direction of first trajectory"));

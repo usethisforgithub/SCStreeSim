@@ -19,8 +19,9 @@ public class Robot {
 	private boolean isoToggle;
 	
 	
-	public Robot( Trajectory traj, double ang)
+	public Robot( Trajectory traj, double ang, int dir)
 	{
+		direction = dir;
 		labelToggle = false;
 		hasFlipped = false;
 		sensing = false;
@@ -31,6 +32,10 @@ public class Robot {
 		//startingY = y;
 		starving = false;
 		isoToggle = false;
+	}
+	
+	public int getDirection(){
+		return direction;
 	}
 	
 	public void setIsolationToggle(boolean b){
