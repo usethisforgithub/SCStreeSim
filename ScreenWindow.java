@@ -426,6 +426,12 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 
 				myPanel.add(Box.createVerticalStrut(15));
 
+				myPanel.add(new JLabel("Direction (-1 or 1):"));
+				myPanel.add(cField);
+
+				myPanel.add(Box.createVerticalStrut(15));
+
+
 
 				int result = JOptionPane.showConfirmDialog(null, myPanel, " Enter Values For New SCS Simulation", JOptionPane.OK_CANCEL_OPTION);
 				Trajectory existingTraj = null;
@@ -434,11 +440,12 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				if (result == JOptionPane.OK_OPTION) {
 					String temp1 = aField.getText();
 					String temp2 = bField.getText();
+					String temp3 = cField.getText();
 					
 
-					if (!temp1.equals("") && !temp2.equals("")) {
+					if (!temp1.equals("") && !temp2.equals("") && !temp3.equals("")) {
 						int angle = Integer.parseInt(temp1);
-						
+						int direction = Integer.parseInt(temp3);
 						
 						for(Trajectory t : map){
 							tempInt = Integer.parseInt(temp2);
@@ -500,7 +507,6 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					myPanel.add(bField);
 
 					myPanel.add(Box.createVerticalStrut(15));
-
 					
 					/*
 					myPanel.add(new JLabel("Enter initial direction of first trajectory"));
