@@ -34,18 +34,21 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	private final int windowSizeX = 1600;
 	private final int windowSizeY = 900;
 	private Trajectory ghostTrajBuild;
+	private ArrayList<Robot> listBot;
 	
 	//SCS stuff
 	private int trajSize;
 	private ArrayList<Trajectory> map;
 	
 	//toggles
-	private boolean addTrajToggle, resetMapToggle, pauseToggle;
+	private boolean addTrajToggle, resetMapToggle, pauseToggle, addDroneToggle;
 	
 
 	
 	public ScreenWindow(){
 		super();
+		listBot = new ArrayList<Robot>();
+		addDroneToggle = false;
 		pauseToggle = true;
 		trajIDIndex = 1;
 		addTrajToggle = false;
@@ -54,7 +57,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		//adds the first trajectory to the map
 		trajSize = 100;
 		map = new ArrayList<Trajectory>();
-		map.add(new Trajectory(new Coordinate(1000,450), 1, trajSize,0));
+		map.add(new Trajectory(new Coordinate(1000,450), trajSize,0));
 		ghostTrajBuild = null;
 		
 	
@@ -287,6 +290,10 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			map.get(i).draw(g2);
 		}
 		
+		//draws drones
+		for(int i = 0; i < listBot.size(); i++){
+			listBot.get(i).draw(g2);
+		}
 		
 			
 		
@@ -392,6 +399,85 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		
+		
+		
+		
+		
+		//add drone
+		if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 380 && arg0.getY() <= 420)){
+			if(!addDroneToggle){
+				addDroneToggle = true;
+				
+				JTextField aField = new JTextField(5);
+				JTextField bField = new JTextField(5);
+				JTextField cField = new JTextField(5);
+				JTextField dField = new JTextField(5);
+
+				JPanel myPanel = new JPanel();
+				myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
+
+				myPanel.add(new JLabel("Enter Angle:"));
+				myPanel.add(aField);
+
+				myPanel.add(Box.createVerticalStrut(15));
+
+				myPanel.add(new JLabel("Trajectory's ID:"));
+				myPanel.add(bField);
+
+				myPanel.add(Box.createVerticalStrut(15));
+
+
+				int result = JOptionPane.showConfirmDialog(null, myPanel, " Enter Values For New SCS Simulation", JOptionPane.OK_CANCEL_OPTION);
+				Trajectory existingTraj = null;
+				int tempInt = 0;
+				
+				if (result == JOptionPane.OK_OPTION) {
+					String temp1 = aField.getText();
+					String temp2 = bField.getText();
+					
+
+					if (!temp1.equals("") && !temp2.equals("")) {
+						int angle = Integer.parseInt(temp1);
+						
+						
+						for(Trajectory t : map){
+							tempInt = Integer.parseInt(temp2);
+							if(tempInt == t.getID()){
+								existingTraj = t;
+							}
+						}
+						
+						/*
+						int newDir = 1;
+						if(existingTraj.getDirection() > 0){
+							newDir = -1;
+						}
+						*/
+						Robot tempBot = new Robot(existingTraj, ((Math.PI/180)*angle));
+						existingTraj.addBot(tempBot);
+						listBot.add(tempBot);
+						
+						
+						
+						
+					}
+					else {
+						System.out.println("Field was left empty. New trajectory was not added.");
+					}
+					
+				}
+			
+				addDroneToggle = false;
+			
+			}
+			
+			
+			
+			
+		}
+		
+		
+		
 		//add trajectory button
 			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 80 && arg0.getY() <= 120)){
 				if(!addTrajToggle){
@@ -447,12 +533,13 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 								}
 							}
 							
+							/*
 							int newDir = 1;
 							if(existingTraj.getDirection() > 0){
 								newDir = -1;
 							}
-							
-							Trajectory newTraj = new Trajectory (new Coordinate(existingTraj.getVertex().getX() + (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.cos((Math.PI/180)*angle), existingTraj.getVertex().getY() - (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.sin((Math.PI/180)*angle)), newDir, existingTraj.getSize(), trajIDIndex);
+							*/
+							Trajectory newTraj = new Trajectory (new Coordinate(existingTraj.getVertex().getX() + (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.cos((Math.PI/180)*angle), existingTraj.getVertex().getY() - (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.sin((Math.PI/180)*angle)),existingTraj.getSize(), trajIDIndex);
 							boolean overlaps = false;
 							for(int i = 0; i < map.size(); i++)
 							{
@@ -515,7 +602,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				if(!resetMapToggle){
 					resetMapToggle = true;
 					map = new ArrayList<Trajectory>();
-					map.add(new Trajectory(new Coordinate(1000,450), 1, trajSize,0));
+					map.add(new Trajectory(new Coordinate(1000,450), trajSize,0));
 					trajIDIndex = 1;
 					resetMapToggle = false;
 				}
@@ -525,21 +612,6 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 140 && arg0.getY() <= 180)){
 				pauseToggle = !pauseToggle;
 			}
-		
-		if(ghostTrajBuild != null){
-		boolean overLap = false;
-		for(Trajectory t : map){
-			if(ghostTrajBuild.overlaps(t)){
-				overLap = true;
-			}
-		}
-		
-		
-		if(!overLap){
-			map.add(ghostTrajBuild);
-			ghostTrajBuild = null;
-		}
-		}
 		
 	}
 

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Trajectory {
 
 	private Coordinate vertex;
-	private int direction;
+	
 	private int sizeT;
 	private ArrayList<Robot> bots;
 	private Arc arc1;
@@ -17,7 +17,7 @@ public class Trajectory {
 	private boolean ghostReady;
 	private ArrayList<TrajAnglePair> neighbors;
 	
-	public Trajectory(Coordinate v, int dir, int s, int id)
+	public Trajectory(Coordinate v, int s, int id)
 	{
 		neighbors = new ArrayList<TrajAnglePair>();
 		ghostReady = false;
@@ -27,7 +27,6 @@ public class Trajectory {
 		arc4 = new Arc(this,4);
 		bots = new ArrayList<Robot>();
 		vertex = v;
-		direction = dir;
 		sizeT = s;
 		trajID = id;
 	}
@@ -95,10 +94,6 @@ public class Trajectory {
 		return vertex;
 	}
 	
-	public int getDirection()
-	{
-		return direction;
-	}
 	
 	public int getSize()
 	{

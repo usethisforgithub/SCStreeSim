@@ -7,9 +7,10 @@ import java.awt.geom.Ellipse2D;
 
 public class Robot {
 
+	private int direction;
 	private boolean sensing, hasFlipped;
 	private Trajectory t;
-	private int angle;
+	private double angle;
 	private int sizeR;
 	private int startingX;
 	private int startingY;
@@ -18,7 +19,7 @@ public class Robot {
 	private boolean isoToggle;
 	
 	
-	public Robot( Trajectory traj, int ang, int x, int y)
+	public Robot( Trajectory traj, double ang)
 	{
 		labelToggle = false;
 		hasFlipped = false;
@@ -26,8 +27,8 @@ public class Robot {
 		t = traj;
 		angle = ang;
 		sizeR = t.getSize()/5;
-		startingX = x;
-		startingY = y;
+	//	startingX = x;
+		//startingY = y;
 		starving = false;
 		isoToggle = false;
 	}
@@ -56,7 +57,7 @@ public class Robot {
 		angle = a;
 	}
 	
-	public int getAngle()
+	public double getAngle()
 	{
 		return angle;
 	}
