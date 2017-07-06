@@ -58,7 +58,7 @@ public class Robot {
 		t=tr;
 	}
 	
-	public void setAngle(int a){
+	public void setAngle(double a){
 		angle = a;
 	}
 	

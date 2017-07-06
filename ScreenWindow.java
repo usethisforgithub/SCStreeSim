@@ -84,7 +84,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			if(!pauseToggle){
 				for(int i = 0; i < listBot.size(); i++){
 					if(listBot.get(i).getDirection() == 1){
-						//listBot.get(i).setAngle(a);
+						listBot.get(i).setAngle(listBot.get(i).getAngle() + (Math.PI/64));
 					}
 				}
 			}
