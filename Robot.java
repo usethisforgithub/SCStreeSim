@@ -8,23 +8,25 @@ import java.awt.geom.Ellipse2D;
 public class Robot {
 
 	private int direction;
-	private boolean sensing, hasFlipped;
+	private boolean hasSensed, hasFlipped;
 	private Trajectory t;
-	private double angle;
+	private int angle;
 	private int sizeR;
 	private int startingX;
 	private int startingY;
 	private boolean labelToggle;
 	private boolean starving;
 	private boolean isoToggle;
+	private int wifiRange;
+	private final int checkingAngle  = 15;
 	
 	
-	public Robot( Trajectory traj, double ang, int dir)
+	public Robot( Trajectory traj, int ang, int dir)
 	{
 		direction = dir;
 		labelToggle = false;
 		hasFlipped = false;
-		sensing = false;
+		hasSensed = false;
 		t = traj;
 		angle = ang;
 		sizeR = t.getSize()/5;
@@ -32,6 +34,27 @@ public class Robot {
 		//startingY = y;
 		starving = false;
 		isoToggle = false;
+		double hdis = (t.getSize()/2) + (t.getSize()/6) - (t.getSize()/2)*Math.cos((Math.PI/180)*checkingAngle);
+		double vdis = (t.getSize()/2)*Math.sin((Math.PI/180)*checkingAngle);
+		wifiRange = (int)Math.round(Math.sqrt(hdis*hdis + vdis*vdis));
+	}
+	
+	public boolean inRange(Robot b){
+		double centerX = t.getVertex().getX() + t.getSize()/2*Math.cos((Math.PI/180)*angle);
+		
+		double centerY = t.getVertex().getY() + t.getSize()/2*Math.sin((Math.PI/180)*angle);
+		
+		double leg1 = Math.abs(centerX - b.getTraj().getVertex().getX() + t.getSize()/2*Math.cos((Math.PI/180)*angle));
+		
+		double leg2 = Math.abs(centerY - b.getTraj().getVertex().getY() + t.getSize()/2*Math.sin((Math.PI/180)*angle));
+		
+		double hypotenuse = Math.sqrt(leg1 * leg1 + leg2 * leg2);
+		
+		return Math.ceil(hypotenuse) < wifiRange + sizeR/2;
+	}
+	
+	public int getCheckingAngle(){
+		return checkingAngle;
 	}
 	
 	public int getDirection(){
@@ -58,21 +81,21 @@ public class Robot {
 		t=tr;
 	}
 	
-	public void setAngle(double a){
+	public void setAngle(int a){
 		angle = a;
 	}
 	
-	public double getAngle()
+	public int getAngle()
 	{
 		return angle;
 	}
 	
-	public void setSensing(boolean state){
-		sensing = state;
+	public void setHasSensed(boolean state){
+		hasSensed = state;
 	}
 	
-	public boolean getSensing(){
-		return sensing;
+	public boolean hasSensed(){
+		return hasSensed;
 	}
 	
 	public boolean isStarving(){
@@ -110,7 +133,7 @@ public class Robot {
 		}
 		//g2.setColor(Color.black);
 	
-		g2.fill(new Ellipse2D.Double(t.getVertex().getX() + t.getSize()/2*Math.cos(angle) - sizeR/2, t.getVertex().getY() - t.getSize()/2*Math.sin(angle) - sizeR/2, sizeR, sizeR));//t.getSize()*Math.cos(angle)
+		g2.fill(new Ellipse2D.Double(t.getVertex().getX() + t.getSize()/2*Math.cos((Math.PI/180)*angle) - sizeR/2, t.getVertex().getY() - t.getSize()/2*Math.sin((Math.PI/180)*angle) - sizeR/2, sizeR, sizeR));//t.getSize()*Math.cos(angle)
 	
 		if(starving && isoToggle){
 			g2.setColor(Color.black);
@@ -123,13 +146,13 @@ public class Robot {
 		g2.setFont(font);
 		//g2.setStroke(new BasicStroke(sizeR/4));
 		if(labelToggle){
-		g2.drawString(startingX +","+startingY, (int)(t.getVertex().getX() + t.getSize()/2*Math.cos(angle)-sizeR/6), (int)(t.getVertex().getY() - t.getSize()/2*Math.sin(angle)+sizeR/6));
+		g2.drawString(startingX +","+startingY, (int)(t.getVertex().getX() + t.getSize()/2*Math.cos((Math.PI/180)*angle)-sizeR/6), (int)(t.getVertex().getY() - t.getSize()/2*Math.sin((Math.PI/180)*angle)+sizeR/6));
 		}
 	
 	}
 	
 	public Coordinate getPosition(){
-		return new Coordinate(t.getVertex().getX() + t.getSize()/2*Math.cos(angle) - sizeR/2,t.getVertex().getY() + t.getSize()/2*Math.sin(angle) - sizeR/2);
+		return new Coordinate(t.getVertex().getX() + t.getSize()/2*Math.cos((Math.PI/180)*angle) - sizeR/2,t.getVertex().getY() + t.getSize()/2*Math.sin((Math.PI/180)*angle) - sizeR/2);
 	}
 	
 }

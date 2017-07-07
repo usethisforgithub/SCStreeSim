@@ -81,11 +81,21 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		while(isRunning){
 			draw();
 			
+			
 			if(!pauseToggle){
 				for(int i = 0; i < listBot.size(); i++){
+	
+					//increments drone posistions
 					if(listBot.get(i).getDirection() == 1){
-						listBot.get(i).setAngle(listBot.get(i).getAngle() + (Math.PI/64));
+						listBot.get(i).setAngle(listBot.get(i).getAngle() + 4);
+						listBot.get(i).setAngle(AngleUtilities.coterminal(listBot.get(i).getAngle()));
+					}else{
+						listBot.get(i).setAngle(listBot.get(i).getAngle() - 4);
+						listBot.get(i).setAngle(AngleUtilities.coterminal(listBot.get(i).getAngle()));
 					}
+					
+					//checks to switch trajectories
+					
 				}
 			}
 			
@@ -147,14 +157,14 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			g2.fillRect(30, 140, 40, 40);
 			g2.setColor(Color.black);
 			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-			g2.drawString("Resume", 85, 165);
+			g2.drawString("Pause", 85, 165);
 		}else{
 			
 			g2.setColor(Color.red);
 			g2.fillRect(30, 140, 40, 40);
 			g2.setColor(Color.black);
 			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-			g2.drawString("Pause", 85, 165);
+			g2.drawString("Resume", 85, 165);
 		}
 		
 		//draws remove drone button
@@ -467,7 +477,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 							newDir = -1;
 						}
 						*/
-						Robot tempBot = new Robot(existingTraj, ((Math.PI/180)*angle),tempDir);
+						Robot tempBot = new Robot(existingTraj, (angle),tempDir);
 						existingTraj.addBot(tempBot);
 						listBot.add(tempBot);
 						
