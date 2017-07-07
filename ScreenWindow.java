@@ -14,10 +14,18 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -132,6 +140,18 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		g2.setColor(Color.black);
 		g2.setFont(new Font("Callibri", Font.PLAIN, 18));
 		g2.drawString("Toolbar", 160, 60);
+		
+		//draws angle chart
+		g2.drawOval(200, 700, trajSize + 30, trajSize + 30);
+		g2.setFont(new Font("Callibri", Font.PLAIN, 12));
+		g2.drawString("0", 200 + trajSize + 40, 700 + (trajSize + 30)/2);
+		g2.drawString("180", 200 - 30, 700 + (trajSize + 30)/2);
+		g2.drawString("90", 208 + trajSize/2, 695);
+		//System.out.println(Math.cos(60));
+		g2.drawString("60", 147 + trajSize/2 + (int)(trajSize * (0.952)), 745 + trajSize/2 - (int)(trajSize * (0.952)));
+		g2.drawString("45", 211 + trajSize/2 + (int)(trajSize * (0.525)), 714 + trajSize/2 - (int)(trajSize * (0.525)));
+		g2.drawString("30", 263 + trajSize/2 + (int)(trajSize * (0.154)), 695 + trajSize/2 - (int)(trajSize * (0.154)));
+
 		
 		//draws add trajectory button
 		if(addTrajToggle){
@@ -636,6 +656,105 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 140 && arg0.getY() <= 180)){
 				pauseToggle = !pauseToggle;
 			}
+			
+			//save map button
+			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 500 && arg0.getY() <= 540)){
+			JFrame parentFrame = new JFrame();
+			 
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setDialogTitle("Specify a file to save");   
+			 
+			int userSelection = fileChooser.showSaveDialog(parentFrame);
+			 
+			if (userSelection == JFileChooser.APPROVE_OPTION) {
+				try{
+					File file = fileChooser.getSelectedFile();
+					String filename = file.getAbsolutePath() + ".txt";
+					FileWriter fw = new FileWriter(filename, true);
+					BufferedWriter bw = new BufferedWriter(fw);
+					
+					for(Trajectory t : map)
+					{
+						bw.write(Integer.toString(t.getID()));
+						bw.newLine();
+						bw.write(t.getVertex().getX() + " " + t.getVertex().getY());
+						bw.newLine();
+					}
+					bw.newLine();
+					bw.write("List of robots");
+					bw.newLine();
+					for(Trajectory t : map)
+					{
+						for(Robot r : t.getRobotList())
+						{
+							bw.write("Traj: " + Integer.toString(t.getID()));
+							bw.newLine();
+							bw.write(Double.toString(r.getAngle()) + " " + r.getDirection());
+							bw.newLine();
+						}
+					}
+					bw.close();
+					System.out.println(file + ".txt");
+				}
+				catch(IOException ioe)
+				{
+					System.err.println(":(");
+				}
+			}
+			}
+			
+			//load map button
+			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 560 && arg0.getY() <= 600)){
+				JFrame parentFrame = new JFrame();
+				JFileChooser fileChooser = new JFileChooser();
+				boolean list = false;
+				int returnVal = fileChooser.showOpenDialog(parentFrame);
+				if(returnVal == JFileChooser.APPROVE_OPTION)
+				{
+					File file = fileChooser.getSelectedFile();
+					try {
+						Scanner scan = new Scanner(file);
+						while(scan.hasNext())
+						{
+							String first = scan.next();
+							if(first == "List")
+							{
+								list = true;
+							}
+							if(!list)
+							{
+								int tempId = Integer.parseInt(first);
+								scan.nextLine();
+								double x = Double.parseDouble(scan.next());
+								double y = (double)scan.nextInt();
+								scan.nextLine();
+								Trajectory traj = new Trajectory(new Coordinate(x, y), trajSize, tempId);
+								map.add(traj);
+							}
+							else
+							{
+								scan.nextLine();
+								int tempTraj = scan.nextInt();
+								scan.nextLine();
+								int angle = scan.nextInt();
+								int dir = scan.nextInt();
+								scan.nextLine();
+								Robot rob = new Robot(map.get(tempTraj), angle, dir);
+								listBot.add(rob);
+								
+							}
+						}
+						scan.close();
+						draw();
+					} catch (FileNotFoundException e) {
+						System.out.println("File not found.");
+					} catch(NumberFormatException e){
+						
+					}
+					
+				}
+			}
+
 		
 	}
 
