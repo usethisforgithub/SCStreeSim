@@ -50,4 +50,53 @@ public class AngleUtilities {
 		
 		return a;
 	}
+	
+	public static int angleDif(int a, int b){
+		int tempDif = Math.abs(a-b);
+		
+		if(tempDif > 180){
+			tempDif = 360 - tempDif;
+		}
+		
+		return tempDif;
+	}
+	
+	public static boolean inRange(int a, int b, int ang){
+		int small, big;
+		
+		if(a == b){
+			//System.out.println("a");
+			if(ang == a){
+				return true;
+			}
+			return false;
+		}
+		
+		if(a > b){
+			
+			small = b;
+			big = a;
+		}else{
+			small = a;
+			big = b;
+		}
+		
+		if(big - small <= 180){
+			//System.out.println("b");
+			//System.out.println("big: " + big);
+			//System.out.println("small: " + small);
+			if(ang <= big && ang >= small){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			//System.out.println("c");
+			if(ang >= big || ang <= small){
+				return true;
+			}else{
+				return false;
+			}
+		}
+	}
 }

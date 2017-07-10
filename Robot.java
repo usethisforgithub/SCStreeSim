@@ -18,7 +18,7 @@ public class Robot {
 	private boolean starving;
 	private boolean isoToggle;
 	private int wifiRange;
-	private final int checkingAngle  = 15;
+	private final int checkingAngle  = 5;
 	
 	
 	public Robot( Trajectory traj, int ang, int dir)
@@ -55,6 +55,10 @@ public class Robot {
 	
 	public int getCheckingAngle(){
 		return checkingAngle;
+	}
+	
+	public void setDirection(int dir){
+		direction = dir;
 	}
 	
 	public int getDirection(){

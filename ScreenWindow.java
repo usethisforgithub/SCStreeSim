@@ -87,38 +87,70 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	
 					//increments drone posistions
 					if(listBot.get(i).getDirection() == 1){
-						listBot.get(i).setAngle(listBot.get(i).getAngle() + 4);
+						listBot.get(i).setAngle(listBot.get(i).getAngle() + 1);
 						listBot.get(i).setAngle(AngleUtilities.coterminal(listBot.get(i).getAngle()));
 					}else{
-						listBot.get(i).setAngle(listBot.get(i).getAngle() - 4);
+						listBot.get(i).setAngle(listBot.get(i).getAngle() - 1);
 						listBot.get(i).setAngle(AngleUtilities.coterminal(listBot.get(i).getAngle()));
 					}
-					
+					//System.out.println(listBot.get(i).getAngle());
 					//checks to switch trajectories
 					
 					for(int j = 0; j < listBot.get(i).getTraj().getNeighbors().size(); j++){
 						//counterclockwise
 						if(listBot.get(i).getDirection() == 1){
 							//if in sensing range
-							if(listBot.get(i).getAngle() <= listBot.get(i).getTraj().getNeighbors().get(j).getAngle() && listBot.get(i).getAngle() >= listBot.get(i).getTraj().getNeighbors().get(j).getAngle() - listBot.get(i).getCheckingAngle()){
+							
+							if(AngleUtilities.inRange(listBot.get(i).getTraj().getNeighbors().get(j).getAngle(), AngleUtilities.coterminal(listBot.get(i).getTraj().getNeighbors().get(j).getAngle() - listBot.get(i).getCheckingAngle()), listBot.get(i).getAngle())){//listBot.get(i).getAngle() <= listBot.get(i).getTraj().getNeighbors().get(j).getAngle() && listBot.get(i).getAngle() >= listBot.get(i).getTraj().getNeighbors().get(j).getAngle() - listBot.get(i).getCheckingAngle()
 								for(int k = 0; k < listBot.size(); k++){
 									if(k != i && listBot.get(i).inRange(listBot.get(k))){
 										listBot.get(i).setHasSensed(true);
 									}
 								}
 							}else{//not in sensing range
-								if(listBot.get(i).getAngle() - listBot.get(i).getTraj().getNeighbors().get(j).getAngle() <= 5 && !listBot.get(i).hasSensed()){
+								if(AngleUtilities.inRange(listBot.get(i).getTraj().getNeighbors().get(j).getAngle(), AngleUtilities.coterminal(listBot.get(i).getTraj().getNeighbors().get(j).getAngle() + 1), listBot.get(i).getAngle())&& !listBot.get(i).hasSensed()){//listBot.get(i).getAngle() - listBot.get(i).getTraj().getNeighbors().get(j).getAngle() <= 5 
+									System.out.println("gothere");
 									int critAngle = listBot.get(i).getTraj().getNeighbors().get(j).getAngle();
 									listBot.get(i).getTraj().removeBot(listBot.get(i));
 									listBot.get(i).setTrajectory(listBot.get(i).getTraj().getNeighbors().get(j).getTraj());
 									listBot.get(i).getTraj().addBot(listBot.get(i));
 									listBot.get(i).setAngle(listBot.get(i).getAngle()+180+2*(critAngle-listBot.get(i).getAngle()));
+									listBot.get(i).setDirection(-1);
 									j = -1;
 								}
-								listBot.get(i).setHasSensed(true);
+								listBot.get(i).setHasSensed(false);
 							}
+							
+							
+							
+							
+							
+							
 						}else{
 							//clockwise
+							
+							
+							//if in sensing range
+							
+							if(AngleUtilities.inRange(listBot.get(i).getTraj().getNeighbors().get(j).getAngle(), AngleUtilities.coterminal(listBot.get(i).getTraj().getNeighbors().get(j).getAngle() + listBot.get(i).getCheckingAngle()), listBot.get(i).getAngle())){//listBot.get(i).getAngle() <= listBot.get(i).getTraj().getNeighbors().get(j).getAngle() && listBot.get(i).getAngle() >= listBot.get(i).getTraj().getNeighbors().get(j).getAngle() - listBot.get(i).getCheckingAngle()
+								for(int k = 0; k < listBot.size(); k++){
+									if(k != i && listBot.get(i).inRange(listBot.get(k))){
+										listBot.get(i).setHasSensed(true);
+									}
+								}
+							}else{//not in sensing range
+								if(AngleUtilities.inRange(listBot.get(i).getTraj().getNeighbors().get(j).getAngle(), AngleUtilities.coterminal(listBot.get(i).getTraj().getNeighbors().get(j).getAngle() - 1), listBot.get(i).getAngle())&& !listBot.get(i).hasSensed()){//listBot.get(i).getAngle() - listBot.get(i).getTraj().getNeighbors().get(j).getAngle() <= 5 
+									System.out.println("gothere");
+									int critAngle = listBot.get(i).getTraj().getNeighbors().get(j).getAngle();
+									listBot.get(i).getTraj().removeBot(listBot.get(i));
+									listBot.get(i).setTrajectory(listBot.get(i).getTraj().getNeighbors().get(j).getTraj());
+									listBot.get(i).getTraj().addBot(listBot.get(i));
+									listBot.get(i).setAngle(listBot.get(i).getAngle()+180+2*(critAngle-listBot.get(i).getAngle()));
+									listBot.get(i).setDirection(1);
+									j = -1;
+								}
+								listBot.get(i).setHasSensed(false);
+							}
 						}
 					}
 				}
