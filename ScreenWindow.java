@@ -197,55 +197,66 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		g2.setFont(new Font("Callibri", Font.PLAIN, 18));
 		g2.drawString("Toolbar", 160, 60);
 		
+		//draws angle chart
+		g2.drawOval(200, 700, trajSize + 30, trajSize + 30);
+		g2.setFont(new Font("Callibri", Font.PLAIN, 12));
+		g2.drawString("0", 200 + trajSize + 40, 700 + (trajSize + 30)/2);
+		g2.drawString("180", 200 - 30, 700 + (trajSize + 30)/2);
+		g2.drawString("90", 208 + trajSize/2, 695);
+		//System.out.println(Math.cos(60));
+		g2.drawString("60", 147 + trajSize/2 + (int)(trajSize * (0.952)), 745 + trajSize/2 - (int)(trajSize * (0.952)));
+		g2.drawString("45", 211 + trajSize/2 + (int)(trajSize * (0.525)), 714 + trajSize/2 - (int)(trajSize * (0.525)));
+		g2.drawString("30", 263 + trajSize/2 + (int)(trajSize * (0.154)), 695 + trajSize/2 - (int)(trajSize * (0.154)));
+		
 		//draws add trajectory button
 		if(addTrajToggle){
 			
 			g2.setColor(Color.red);
-			g2.fillRect(30, 80, 40, 40);
+			g2.fillRect(30, 140, 40, 40);
 			g2.setColor(Color.black);
 			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-			g2.drawString("Add In Progress", 85, 105);
+			g2.drawString("Add In Progress", 85, 165);
 		}else{
 			
 			g2.setColor(Color.green);
-			g2.fillRect(30, 80, 40, 40);
+			g2.fillRect(30, 140, 40, 40);
 			g2.setColor(Color.black);
 			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-			g2.drawString("Add Trajectory", 85, 105);
+			g2.drawString("Add Trajectory", 85, 165);
 		}
 		
 		//draws pause button
 		if(!pauseToggle){
 			
 			g2.setColor(Color.red);
-			g2.fillRect(30, 140, 40, 40);
+			g2.fillRect(30, 80, 40, 40);
 			g2.setColor(Color.black);
 			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-			g2.drawString("Pause", 85, 165);
+			g2.drawString("Pause", 85, 105);
 		}else{
 			
 			g2.setColor(Color.green);
-			g2.fillRect(30, 140, 40, 40);
+			g2.fillRect(30, 80, 40, 40);
 			g2.setColor(Color.black);
 			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-			g2.drawString("Resume", 85, 165);
+			g2.drawString("Resume", 85, 105);
 		}
 		
 		//draws remove drone button
 		if(true){
 			
-			g2.setColor(Color.red);
-			g2.fillRect(30, 200, 40, 40);
+			g2.setColor(Color.magenta);
+			g2.fillRect(220, 200, 40, 40);
 			g2.setColor(Color.black);
 			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-			g2.drawString("Remove Drones", 85, 225);
+			g2.drawString("Remove Drones", 270, 225);
 		}else{
 			
 			g2.setColor(Color.red);
-			g2.fillRect(30, 200, 40, 40);
+			g2.fillRect(220, 200, 40, 40);
 			g2.setColor(Color.black);
 			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-			g2.drawString("Remove Drones", 85, 225);
+			g2.drawString("Remove Drones", 270, 225);
 		}
 		
 		//draws uncovering resilience button
@@ -255,31 +266,31 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					g2.fillRect(30, 260, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Show Uncovering Resilience", 85, 285);
+					g2.drawString("Show Uncovering", 85, 285);
 				}else{
 					
 					g2.setColor(Color.red);
 					g2.fillRect(30, 260, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Uncovering Resilience", 85, 285);
+					g2.drawString("Uncovering Off", 85, 285);
 				}
 				
 		//draws isolation button
 				if(true){
 					
 					g2.setColor(Color.green);
-					g2.fillRect(30, 320, 40, 40);
+					g2.fillRect(220, 260, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Show Isolation", 85, 345);
+					g2.drawString("Show Isolation", 270, 285);
 				}else{
 					
 					g2.setColor(Color.red);
-					g2.fillRect(30, 320, 40, 40);
+					g2.fillRect(220, 260, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Isolation", 85, 345);
+					g2.drawString("Isolation off", 270, 345);
 				}
 				
 				
@@ -287,18 +298,11 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				if(true){
 					
 					g2.setColor(Color.magenta);
-					g2.fillRect(30, 380, 40, 40);
+					g2.fillRect(30, 200, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Add drones", 85, 405);
-				}else{
-					
-					g2.setColor(Color.red);
-					g2.fillRect(30, 380, 40, 40);
-					g2.setColor(Color.black);
-					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Add Drones", 85, 405);
-				}		
+					g2.drawString("Add drones", 85, 225);
+				}	
 				
 				
 				
@@ -315,37 +319,21 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		//draws save map button
 				if(true){
 					
-					g2.setColor(Color.BLUE);
-					g2.fillRect(30, 500, 40, 40);
+					g2.setColor(Color.cyan);
+					g2.fillRect(30, 320, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Save Map", 85, 525);
-				}else{
-					
-					g2.setColor(Color.red);
-					g2.fillRect(30, 500, 40, 40);
-					g2.setColor(Color.black);
-					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Save", 85, 525);
-				}
-				
-				
-				
+					g2.drawString("Save Map", 85, 345);
+				}	
+								
 		//draws load map button
 				if(true){
 					
 					g2.setColor(Color.cyan);
-					g2.fillRect(30, 560, 40, 40);
+					g2.fillRect(220, 320, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Load Map", 85, 585);
-				}else{
-					
-					g2.setColor(Color.red);
-					g2.fillRect(30, 560, 40, 40);
-					g2.setColor(Color.black);
-					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Isolation", 85, 585);
+					g2.drawString("Load Map", 270, 345);
 				}
 		
 		//draws help button
@@ -477,7 +465,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		
 		
 		//add drone
-		if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 380 && arg0.getY() <= 420)){
+		if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 200 && arg0.getY() <= 240)){
 			if(!addDroneToggle){
 				addDroneToggle = true;
 				
@@ -560,7 +548,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		
 		
 		//add trajectory button
-			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 80 && arg0.getY() <= 120)){
+			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 140 && arg0.getY() <= 180)){
 				if(!addTrajToggle){
 					addTrajToggle = true;
 					
@@ -693,7 +681,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			
 			
 			//save map button
-			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 500 && arg0.getY() <= 540)){
+			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 320 && arg0.getY() <= 360)){
 				JFrame parentFrame = new JFrame();
 				 
 				JFileChooser fileChooser = new JFileChooser();
@@ -739,7 +727,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				}
 			
 			//load map button
-			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 560 && arg0.getY() <= 600)){
+			if((arg0.getX() >= 220 && arg0.getX() <= 260) && (arg0.getY() >= 320 && arg0.getY() <= 360)){
 				JFrame parentFrame = new JFrame();
 				JFileChooser fileChooser = new JFileChooser();
 				boolean trajlist = true;
@@ -791,7 +779,6 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 									}
 								}
 								Robot rob = new Robot(t, angle, dir);
-								System.out.println(rob.getTraj().getID());
 								t.addBot(rob);
 								listBot.add(rob);
 							}
@@ -808,7 +795,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			
 			
 			//pause button
-			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 140 && arg0.getY() <= 180)){
+			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 80 && arg0.getY() <= 120)){
 				pauseToggle = !pauseToggle;
 			}
 		
