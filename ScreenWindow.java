@@ -686,9 +686,11 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					trajIDIndex = 1;
 					resetMapToggle = false;
 				}
+				
+				listBot = new ArrayList<Robot>();
 			}
 			
-			
+			//pause button
 			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 140 && arg0.getY() <= 180)){
 				pauseToggle = !pauseToggle;
 			}
