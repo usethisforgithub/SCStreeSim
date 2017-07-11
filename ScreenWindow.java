@@ -14,10 +14,18 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -209,14 +217,14 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		//draws pause button
 		if(!pauseToggle){
 			
-			g2.setColor(Color.green);
+			g2.setColor(Color.red);
 			g2.fillRect(30, 140, 40, 40);
 			g2.setColor(Color.black);
 			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
 			g2.drawString("Pause", 85, 165);
 		}else{
 			
-			g2.setColor(Color.red);
+			g2.setColor(Color.green);
 			g2.fillRect(30, 140, 40, 40);
 			g2.setColor(Color.black);
 			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
@@ -226,7 +234,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		//draws remove drone button
 		if(true){
 			
-			g2.setColor(Color.green);
+			g2.setColor(Color.red);
 			g2.fillRect(30, 200, 40, 40);
 			g2.setColor(Color.black);
 			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
@@ -278,7 +286,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				//draws add drone button
 				if(true){
 					
-					g2.setColor(Color.green);
+					g2.setColor(Color.magenta);
 					g2.fillRect(30, 380, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
@@ -297,24 +305,17 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		//draws reset map button
 				if(!resetMapToggle){
 					
-					g2.setColor(Color.green);
-					g2.fillRect(30, 440, 40, 40);
-					g2.setColor(Color.black);
-					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Reset Map", 85, 465);
-				}else{
-					
 					g2.setColor(Color.red);
 					g2.fillRect(30, 440, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Reset", 85, 465);
+					g2.drawString("Reset Map", 85, 465);
 				}
 				
 		//draws save map button
 				if(true){
 					
-					g2.setColor(Color.green);
+					g2.setColor(Color.BLUE);
 					g2.fillRect(30, 500, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
@@ -333,7 +334,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		//draws load map button
 				if(true){
 					
-					g2.setColor(Color.green);
+					g2.setColor(Color.cyan);
 					g2.fillRect(30, 560, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
@@ -689,6 +690,122 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				
 				listBot = new ArrayList<Robot>();
 			}
+			
+			
+			//save map button
+			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 500 && arg0.getY() <= 540)){
+				JFrame parentFrame = new JFrame();
+				 
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setDialogTitle("Specify a file to save");   
+				 
+				int userSelection = fileChooser.showSaveDialog(parentFrame);
+				 
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+					try{
+						File file = fileChooser.getSelectedFile();
+						String filename = file.getAbsolutePath() + ".txt";
+						FileWriter fw = new FileWriter(filename, true);
+						BufferedWriter bw = new BufferedWriter(fw);
+						
+						for(Trajectory t : map)
+						{
+							bw.write(Integer.toString(t.getID()));
+							bw.newLine();
+							bw.write(t.getVertex().getX() + " " + t.getVertex().getY());
+							bw.newLine();
+						}
+						//bw.newLine();
+						bw.write("List of robots");
+						bw.newLine();
+						for(Trajectory t : map)
+						{
+							for(Robot r : t.getRobotList())
+							{
+								bw.write(Integer.toString(t.getID()));
+								bw.newLine();
+								bw.write(Double.toString((int)r.getAngle()) + " " + r.getDirection());
+								bw.newLine();
+							}
+						}
+						bw.close();
+						System.out.println(file + ".txt");
+					}
+					catch(IOException ioe)
+					{
+						System.err.println(":(");
+					}
+				}
+				}
+			
+			//load map button
+			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 560 && arg0.getY() <= 600)){
+				JFrame parentFrame = new JFrame();
+				JFileChooser fileChooser = new JFileChooser();
+				boolean trajlist = true;
+				int returnVal = fileChooser.showOpenDialog(parentFrame);
+				if(returnVal == JFileChooser.APPROVE_OPTION)
+				{
+					File file = fileChooser.getSelectedFile();
+					try {
+						Scanner scan = new Scanner(file);
+						map = new ArrayList<Trajectory>();
+						//listBot = new ArrayList<Robot>();
+						while(scan.hasNext())
+						{
+							String first = scan.next();
+							if(first.equals("List"))
+							{
+								trajlist = false;
+							}
+							if(trajlist == true)
+							{
+								int tempId = Integer.parseInt(first);
+								scan.nextLine();
+								double x = Double.parseDouble(scan.next());
+								double y = (double)scan.nextInt();
+								scan.nextLine();
+								Trajectory traj = new Trajectory(new Coordinate(x, y), trajSize, tempId);
+								map.add(traj);
+							}
+							else if(trajlist == false)
+							{
+								int tempTraj = 2;
+								String next = scan.nextLine();
+								if(next.equals(" of robots"))
+								{
+									tempTraj = Integer.parseInt(scan.next());	
+									scan.nextLine();
+								}
+								else
+								{
+									tempTraj = Integer.parseInt(first);
+								}
+								int angle = (int)scan.nextDouble();
+								int dir = scan.nextInt();
+								Trajectory t = null;
+								
+								for(int i = 0; i < map.size(); i++){
+									if(map.get(i).getID() == tempTraj){
+										t = map.get(i);
+									}
+								}
+								Robot rob = new Robot(t, angle, dir);
+								System.out.println(rob.getTraj().getID());
+								t.addBot(rob);
+								listBot.add(rob);
+							}
+						}
+						scan.close();
+					} catch (FileNotFoundException e) {
+						System.out.println("File not found.");
+					} catch(NumberFormatException e){
+						
+					}
+					
+				}
+			}
+			
 			
 			//pause button
 			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 140 && arg0.getY() <= 180)){
