@@ -106,7 +106,6 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					boolean loopFix = true;
 					for(int j = 0; j < listBot.get(i).getTraj().getNeighbors().size(); j++){
 						//counterclockwise
-						System.out.println("loop");
 						if(listBot.get(i).getDirection() == 1){
 							if(listBot.get(i).getAngle() == listBot.get(i).getTraj().getNeighbors().get(j).getAngle()){
 								
@@ -118,7 +117,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 								}
 								
 								if(!listBot.get(i).hasSensed() && loopFix){
-									System.out.println("a");
+									
 									int critAngle = listBot.get(i).getTraj().getNeighbors().get(j).getAngle();
 									listBot.get(i).getTraj().removeBot(listBot.get(i));
 									listBot.get(i).setTrajectory(listBot.get(i).getTraj().getNeighbors().get(j).getTraj());
@@ -143,7 +142,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 								}
 								
 								if(!listBot.get(i).hasSensed() && loopFix){
-									System.out.println("b");
+									
 									int critAngle = listBot.get(i).getTraj().getNeighbors().get(j).getAngle();
 									listBot.get(i).getTraj().removeBot(listBot.get(i));
 									listBot.get(i).setTrajectory(listBot.get(i).getTraj().getNeighbors().get(j).getTraj());
@@ -632,6 +631,8 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 										TrajAnglePair tap1,tap2;
 										tap1 = new TrajAnglePair(map.get(i),newTraj.angleFrom(map.get(i)));
 										tap2 = new TrajAnglePair(newTraj,map.get(i).angleFrom(newTraj));
+										//System.out.println(newTraj.angleFrom(map.get(i)));
+										System.out.println(map.get(i).angleFrom(newTraj));
 										newTraj.addNeighbor(tap1);
 										map.get(i).addNeighbor(tap2);
 									}
@@ -653,14 +654,16 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				
 				}
 				
+				
 				//displays neighbors
+				/*
 				for(int i = 0; i < map.size(); i++){
 					System.out.println("Traj #" + map.get(i).getID() + " neighbors: ");
 					for(int j = 0; j < map.get(i).getNeighbors().size(); j++){
 						System.out.println("Traj #" + map.get(i).getNeighbors().get(j).getTraj().getID() + " at " + map.get(i).getNeighbors().get(j).getAngle() + " degrees" );
 					}
 				}
-				
+				*/
 				
 				
 				
