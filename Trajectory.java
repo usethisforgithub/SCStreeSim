@@ -148,23 +148,66 @@ public class Trajectory {
 		
 		double centerY = vertex.getY();
 		
-		double leg1 = (centerX - t.getVertex().getX());
+		double leg1, leg2;
+		
+		
+		if(centerX > t.getVertex().getX())
+		{
+			leg1 = (centerX - t.getVertex().getX());
+		}
+		else
+			leg1 = (centerX - t.getVertex().getX());
+		
+		if(centerY > t.getVertex().getY())
+		{
+			leg2 = -(centerY - t.getVertex().getY());
+		}
+		else
+			leg2 = -(centerY - t.getVertex().getY());
+		
+		int ang = Math.abs((int)((180/Math.PI)*Math.atan(leg2/leg1)));
+		int tempAng = 0;
+		if(leg1 > 0 && leg2 >= 0)
+		{
+			tempAng = ang;
+		}
+		if(leg1 < 0 && leg2 >= 0)
+		{
+			tempAng = 180 - ang;
+		}
+		if(leg1 < 0 && leg2 < 0)
+		{
+			tempAng = 180 + ang;
+		}
+		if(leg2 < 0 && leg1 > 0)
+		{
+			tempAng = 360 - ang;
+		}
+		
+		tempAng = (int)AngleUtilities.coterminal(tempAng);
+		/*
+		leg1 = (centerX - t.getVertex().getX());
 		if(leg1 != 0){
 			leg1*=-1;
 		}
 		
-		double leg2 = (centerY - t.getVertex().getY());
+		leg2 = -(centerY - t.getVertex().getY()); 
 		
 		
 		int tempAng = (int)((180/Math.PI)*Math.atan(leg2/leg1));
 		
 		tempAng = (int)AngleUtilities.coterminal(tempAng);
 		
+		if(leg2 == -0.0)
+			{
+			int diff = 90 - tempAng;
+			tempAng += 2*diff;
+			}
 		if(leg1 < 0){
 			int dif = 90 - tempAng;
 			tempAng += 2*dif;
 		}
-		
+		*/
 		
 		
 		return tempAng;

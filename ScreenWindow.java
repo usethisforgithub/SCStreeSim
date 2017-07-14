@@ -49,7 +49,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	private ArrayList<Trajectory> map;
 	
 	//toggles
-	private boolean addTrajToggle, resetMapToggle, pauseToggle, addDroneToggle;
+	private boolean addTrajToggle, resetMapToggle, pauseToggle, addDroneToggle, helpToggle, addTrajDroneToggle;
 	
 
 	
@@ -93,7 +93,8 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			if(!pauseToggle){
 				for(int i = 0; i < listBot.size(); i++){
 	
-					//increments drone posistions
+					//increments drone positions
+					Robot r = listBot.get(i);
 					if(listBot.get(i).getDirection() == 1){
 						listBot.get(i).setAngle(listBot.get(i).getAngle() + 1);
 						listBot.get(i).setAngle(AngleUtilities.coterminal(listBot.get(i).getAngle()));
@@ -102,6 +103,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 						listBot.get(i).setAngle(AngleUtilities.coterminal(listBot.get(i).getAngle()));
 					}
 					//System.out.println(listBot.get(i).getAngle());
+					
 					//checks to switch trajectories
 					boolean loopFix = true;
 					for(int j = 0; j < listBot.get(i).getTraj().getNeighbors().size(); j++){
@@ -197,15 +199,24 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		g2.drawString("Toolbar", 160, 60);
 		
 		//draws angle chart
-		g2.drawOval(200, 700, trajSize + 30, trajSize + 30);
-		g2.setFont(new Font("Callibri", Font.PLAIN, 12));
-		g2.drawString("0", 200 + trajSize + 40, 700 + (trajSize + 30)/2);
-		g2.drawString("180", 200 - 30, 700 + (trajSize + 30)/2);
-		g2.drawString("90", 208 + trajSize/2, 695);
-		//System.out.println(Math.cos(60));
-		g2.drawString("60", 147 + trajSize/2 + (int)(trajSize * (0.952)), 745 + trajSize/2 - (int)(trajSize * (0.952)));
-		g2.drawString("45", 211 + trajSize/2 + (int)(trajSize * (0.525)), 714 + trajSize/2 - (int)(trajSize * (0.525)));
-		g2.drawString("30", 263 + trajSize/2 + (int)(trajSize * (0.154)), 695 + trajSize/2 - (int)(trajSize * (0.154)));
+		if(helpToggle)
+		{
+			g2.drawOval(200, 700, trajSize + 30, trajSize + 30);
+			g2.setFont(new Font("Callibri", Font.PLAIN, 12));
+			g2.drawString("0", 200 + trajSize + 40, 700 + (trajSize + 30)/2);
+			g2.drawString("180", 200 - 30, 700 + (trajSize + 30)/2);
+			g2.drawString("90", 208 + trajSize/2, 695);
+			//System.out.println(Math.cos(120));
+			g2.drawString("60", 147 + trajSize/2 + (int)(trajSize * (0.952)), 745 + trajSize/2 - (int)(trajSize * (0.952)));
+			g2.drawString("45", 211 + trajSize/2 + (int)(trajSize * (0.525)), 714 + trajSize/2 - (int)(trajSize * (0.525)));
+			g2.drawString("30", 263 + trajSize/2 + (int)(trajSize * (0.154)), 695 + trajSize/2 - (int)(trajSize * (0.154)));
+			g2.drawString("120", 170 + trajSize/2, 745 + trajSize/2 - (int)(trajSize * (0.952)));
+			g2.drawString("135", 146 + trajSize/2, 716 + trajSize/2 - (int)(trajSize * (0.525)));
+			g2.drawString("150", 130 + trajSize/2, 700 + trajSize/2 - (int)(trajSize * (0.154)));
+			g2.drawString("210", 128 + trajSize/2, 760 + trajSize/2 - (int)(trajSize * (0.154)));
+			g2.drawString("225", 139 + trajSize/2, 818 + trajSize/2 - (int)(trajSize * (0.525)));
+			g2.drawString("240", 160 + trajSize/2, 836 + trajSize/2 - (int)(trajSize * (0.525)));
+		}
 		
 		//draws add trajectory button
 		if(addTrajToggle){
@@ -223,6 +234,24 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
 			g2.drawString("Add Trajectory", 85, 165);
 		}
+		
+		//draws add trajectory and drone button
+			if(addTrajDroneToggle){
+				
+				g2.setColor(Color.blue);
+				g2.fillRect(220, 140, 40, 40);
+				g2.setColor(Color.black);
+				g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+				g2.drawString("Add In Progress", 275, 165);
+			}else{
+				
+				g2.setColor(Color.green);
+				g2.fillRect(220, 140, 40, 40);
+				g2.setColor(Color.black);
+				g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+				g2.drawString("Add Trajectory", 275, 165);
+				g2.drawString("and drone", 290, 185);
+			}
 		
 		//draws pause button
 		if(!pauseToggle){
@@ -336,11 +365,22 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				}
 		
 		//draws help button
-			g2.setColor(Color.white);
-			g2.fillRect(370, 40, 20, 20);
-			g2.setColor(Color.black);
-			g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-			g2.drawString("?", 375, 55);
+			if(!helpToggle)
+			{
+				g2.setColor(Color.white);
+				g2.fillRect(370, 40, 20, 20);
+				g2.setColor(Color.black);
+				g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+				g2.drawString("?", 375, 55);
+			}
+			else
+			{
+				g2.setColor(Color.black);
+				g2.fillRect(370, 40, 20, 20);
+				g2.setColor(Color.white);
+				g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+				g2.drawString("?", 375, 55);
+			}
 
 			
 		
@@ -628,11 +668,17 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 								//loop to set neighbors
 								for(int i = 0; i < map.size(); i++) {
 									if(newTraj.tangent(map.get(i))) {
+										
+										//newTraj.addNeighbor(map.get(i));
+										
+										
+										
+										
 										TrajAnglePair tap1,tap2;
-										tap1 = new TrajAnglePair(map.get(i),newTraj.angleFrom(map.get(i)));
-										tap2 = new TrajAnglePair(newTraj,map.get(i).angleFrom(newTraj));
-										//System.out.println(newTraj.angleFrom(map.get(i)));
-										System.out.println(map.get(i).angleFrom(newTraj));
+										tap1 = new TrajAnglePair(map.get(i), map.get(i).angleFrom(newTraj));
+										tap2 = new TrajAnglePair(newTraj, newTraj.angleFrom(map.get(i)));
+										//System.out.println("first: "  + newTraj.angleFrom(map.get(i)));
+										//System.out.println("second: " + map.get(i).angleFrom(newTraj));
 										newTraj.addNeighbor(tap1);
 										map.get(i).addNeighbor(tap2);
 									}
@@ -663,11 +709,146 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 						System.out.println("Traj #" + map.get(i).getNeighbors().get(j).getTraj().getID() + " at " + map.get(i).getNeighbors().get(j).getAngle() + " degrees" );
 					}
 				}
+				System.out.println();
 				*/
 				
-				
+			
 				
 			}
+			
+			
+			//add traj and drone button 
+			if((arg0.getX() >= 220 && arg0.getX() <= 260) && (arg0.getY() >= 140 && arg0.getY() <= 180)){
+				if(!addTrajDroneToggle){
+					addTrajDroneToggle = true;
+					
+					JTextField aField = new JTextField(5);
+					JTextField bField = new JTextField(5);
+					JTextField cField = new JTextField(5);
+					JTextField dField = new JTextField(5);
+
+					JPanel myPanel = new JPanel();
+					myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
+
+					myPanel.add(new JLabel("Enter Angle:"));
+					myPanel.add(aField);
+
+					myPanel.add(Box.createVerticalStrut(15));
+
+					myPanel.add(new JLabel("Existing Trajectory's ID:"));
+					myPanel.add(bField);
+
+					myPanel.add(Box.createVerticalStrut(15));
+
+					
+					/*
+					myPanel.add(new JLabel("Enter initial direction of first trajectory"));
+					myPanel.add(new JLabel("-1 (clockwise) or 1 (counterclockwise):"));
+					myPanel.add(cField);
+
+					myPanel.add(Box.createVerticalStrut(15));
+
+					myPanel.add(new JLabel("Enter initial angle of first drone"));
+					myPanel.add(new JLabel("in radians between (0.00 - 6.28):"));
+					myPanel.add(dField); */
+
+					int result = JOptionPane.showConfirmDialog(null, myPanel, " Enter Values For New Trajectory", JOptionPane.OK_CANCEL_OPTION);
+					Trajectory existingTraj = null;
+					int tempInt = 0;
+					
+					if (result == JOptionPane.OK_OPTION) {
+						String temp1 = aField.getText();
+						String temp2 = bField.getText();
+						
+
+						if (!temp1.equals("") && !temp2.equals("")) {
+							double angle = Double.parseDouble(temp1);
+							
+							
+							for(Trajectory t : map){
+								tempInt = Integer.parseInt(temp2);
+								if(tempInt == t.getID()){
+									existingTraj = t;
+								}
+							}
+							
+							/*
+							int newDir = 1;
+							if(existingTraj.getDirection() > 0){
+								newDir = -1;
+							}
+							*/
+							Trajectory newTraj = new Trajectory (new Coordinate(existingTraj.getVertex().getX() + (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.cos((Math.PI/180)*angle), existingTraj.getVertex().getY() - (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.sin((Math.PI/180)*angle)),existingTraj.getSize(), trajIDIndex);
+							
+							//adds new bot
+							if(!existingTraj.getRobotList().isEmpty())
+							{
+								int ang = Math.abs(existingTraj.getRobotList().get(0).getAngle());
+								int newAng = AngleUtilities.coterminal(ang + 180);
+								int dir = existingTraj.getRobotList().get(0).getDirection();
+								if(dir == 1){
+									dir = -1;
+								}else{
+									dir = 1;
+								}
+								Robot r = new Robot(newTraj, newAng, dir);
+								newTraj.addBot(r);
+								listBot.add(r);		
+							}
+									
+							boolean overlaps = false;
+							for(int i = 0; i < map.size(); i++)
+							{
+								if(!newTraj.overlaps(map.get(i))){
+									
+								}
+								else
+								{
+									System.out.println("Overlaps.");
+									overlaps = true;
+								}
+							}
+							if(!overlaps){
+								map.add(newTraj);
+								trajIDIndex++;
+				
+							
+								//loop to set neighbors
+								for(int i = 0; i < map.size(); i++) {
+									if(newTraj.tangent(map.get(i))) {
+										
+										//newTraj.addNeighbor(map.get(i));
+										
+										
+										
+										
+										TrajAnglePair tap1,tap2;
+										tap1 = new TrajAnglePair(map.get(i), map.get(i).angleFrom(newTraj));
+										tap2 = new TrajAnglePair(newTraj, newTraj.angleFrom(map.get(i)));
+										//System.out.println("first: "  + newTraj.angleFrom(map.get(i)));
+										//System.out.println("second: " + map.get(i).angleFrom(newTraj));
+										newTraj.addNeighbor(tap1);
+										map.get(i).addNeighbor(tap2);
+									}
+								}
+							
+							
+							
+							}
+							
+						}
+						else {
+							System.out.println("Field was left empty. New trajectory was not added.");
+						}
+						
+					}
+				
+					addTrajDroneToggle = false;
+				
+				}
+			}
+			
+			
 			//reset map button
 			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 440 && arg0.getY() <= 480)){
 				System.out.println("Map has been reset");
@@ -758,6 +939,30 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 								scan.nextLine();
 								Trajectory traj = new Trajectory(new Coordinate(x, y), trajSize, tempId);
 								map.add(traj);
+								
+								
+								
+					
+								
+									//loop to set neighbors
+									for(int i = 0; i < map.size(); i++) {
+										if(traj.tangent(map.get(i))) {
+											TrajAnglePair tap1,tap2;
+											tap1 = new TrajAnglePair(map.get(i),traj.angleFrom(map.get(i)));
+											tap2 = new TrajAnglePair(traj,map.get(i).angleFrom(traj));
+											//System.out.println(newTraj.angleFrom(map.get(i)));
+											System.out.println(map.get(i).angleFrom(traj));
+											traj.addNeighbor(tap1);
+											map.get(i).addNeighbor(tap2);
+										}
+									}
+								
+								
+								
+								
+								
+								
+								
 							}
 							else if(trajlist == false)
 							{
@@ -796,11 +1001,27 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				}
 			}
 			
+			//removes robot
+			for(int i = 0; i < listBot.size(); i++){
+				if(listBot.get(i).contains(new Coordinate(arg0.getX(), arg0.getY()))){
+					listBot.get(i).getTraj().removeBot(listBot.get(i));
+					listBot.remove(i);
+				}
+			}
+			
 			
 			//pause button
 			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 80 && arg0.getY() <= 120)){
 				pauseToggle = !pauseToggle;
 			}
+			
+			//help button
+			if((arg0.getX() >= 370 && arg0.getX() <= 390) && (arg0.getY() >= 40 && arg0.getY() <= 60))
+			{
+				helpToggle = !helpToggle;
+			}
+			
+			
 		
 	}
 
