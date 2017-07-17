@@ -166,7 +166,7 @@ public class Trajectory {
 			leg2 = -(centerY - t.getVertex().getY());
 		
 		int ang = Math.abs((int)((180/Math.PI)*Math.atan(leg2/leg1)));
-		int tempAng = 0;
+		int tempAng = Math.abs((int)((180/Math.PI)*Math.atan(leg2/leg1)));
 		if(leg1 > 0 && leg2 >= 0)
 		{
 			tempAng = ang;
@@ -175,11 +175,11 @@ public class Trajectory {
 		{
 			tempAng = 180 - ang;
 		}
-		if(leg1 < 0 && leg2 < 0)
+		if(leg1 <= 0 && leg2 < 0)
 		{
 			tempAng = 180 + ang;
 		}
-		if(leg2 < 0 && leg1 > 0)
+		if(leg2 < 0 && leg1 >= 0)
 		{
 			tempAng = 360 - ang;
 		}

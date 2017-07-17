@@ -702,7 +702,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				
 				
 				//displays neighbors
-				/*
+				
 				for(int i = 0; i < map.size(); i++){
 					System.out.println("Traj #" + map.get(i).getID() + " neighbors: ");
 					for(int j = 0; j < map.get(i).getNeighbors().size(); j++){
@@ -710,7 +710,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					}
 				}
 				System.out.println();
-				*/
+				
 				
 			
 				
