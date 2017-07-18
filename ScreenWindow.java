@@ -109,14 +109,26 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					
 					for(int j = 0; j < listBot.get(i).getTraj().getNeighbors().size(); j++){
 						if(listBot.get(i).getAngle() == listBot.get(i).getTraj().getNeighbors().get(j).getAngle()){
+							boolean sensed = false;
+							for(int l = 0; l < listBot.size(); l++){
+								if(listBot.get(i).inRange(listBot.get(l)) && l != i){
+									sensed = true;
+								}
+							}
+							
+							
+							
+							
+							if(!sensed){
+							
 							int oldAngle = listBot.get(i).getAngle();
 							
 							Trajectory tempTraj = listBot.get(i).getTraj().getNeighbors().get(j).getTraj();
 							int newAngle= -9999999;
 							
 							for(int k = 0; k < tempTraj.getNeighbors().size();k++){
-								if(tempTraj.getNeighbors().get(j).getTraj().getID() == listBot.get(i).getTraj().getID()){
-									newAngle = tempTraj.getNeighbors().get(j).getAngle();
+								if(tempTraj.getNeighbors().get(k).getTraj().getID() == listBot.get(i).getTraj().getID()){
+									newAngle = tempTraj.getNeighbors().get(k).getAngle();
 								}
 							}
 							
@@ -124,6 +136,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 							
 							if(listBot.get(i).getDirection() == 1){
 								listBot.get(i).setDirection(-1);
+								
 							}else{
 								listBot.get(i).setDirection(1);
 							}
@@ -133,6 +146,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 							tempTraj.addBot(listBot.get(i));
 							listBot.get(i).setAngle(newAngle);
 							j = 999999999;
+						}
 						}
 					}
 					
