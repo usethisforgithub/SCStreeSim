@@ -93,7 +93,6 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			
 			if(!pauseToggle){
 				for(int i = 0; i < listBot.size(); i++){
-	
 					//increments drone positions
 					Robot r = listBot.get(i);
 					if(listBot.get(i).getDirection() == 1){
@@ -105,7 +104,45 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					}
 					//System.out.println(listBot.get(i).getAngle());
 					
+					
+					
+					
+					for(int j = 0; j < listBot.get(i).getTraj().getNeighbors().size(); j++){
+						if(listBot.get(i).getAngle() == listBot.get(i).getTraj().getNeighbors().get(j).getAngle()){
+							int oldAngle = listBot.get(i).getAngle();
+							
+							Trajectory tempTraj = listBot.get(i).getTraj().getNeighbors().get(j).getTraj();
+							int newAngle= -9999999;
+							
+							for(int k = 0; k < tempTraj.getNeighbors().size();k++){
+								if(tempTraj.getNeighbors().get(j).getTraj().getID() == listBot.get(i).getTraj().getID()){
+									newAngle = tempTraj.getNeighbors().get(j).getAngle();
+								}
+							}
+							
+							System.out.println("switched from " + oldAngle + " to " + newAngle);
+							
+							if(listBot.get(i).getDirection() == 1){
+								listBot.get(i).setDirection(-1);
+							}else{
+								listBot.get(i).setDirection(1);
+							}
+							
+							listBot.get(i).getTraj().removeBot(listBot.get(i));
+							listBot.get(i).setTrajectory(tempTraj);
+							tempTraj.addBot(listBot.get(i));
+							listBot.get(i).setAngle(newAngle);
+							j = 999999999;
+						}
+					}
+					
+					
+					
+					
+					
+					
 					//checks to switch trajectories
+					/*
 					boolean loopFix = true;
 					for(int j = 0; j < listBot.get(i).getTraj().getNeighbors().size(); j++){
 						//counterclockwise
@@ -162,6 +199,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 							}
 						}
 					}
+					*/
 				}
 			}
 			
@@ -292,21 +330,21 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			g2.drawString("Remove Drones", 270, 225);
 		}
 		
-		//draws uncovering resilience button
+		//draws show neighbors button
 				if(true){
 					
 					g2.setColor(Color.green);
 					g2.fillRect(30, 260, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Show Uncovering", 85, 285);
+					g2.drawString("show neighbors", 85, 285);
 				}else{
 					
 					g2.setColor(Color.red);
 					g2.fillRect(30, 260, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Uncovering Off", 85, 285);
+					g2.drawString("show neighbors", 85, 285);
 				}
 				
 		//draws isolation button
@@ -916,6 +954,16 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					}
 				}
 				}
+
+			//neighbor button
+			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 260 && arg0.getY() <= 300)){
+				for(int i = 0; i < map.size(); i++){
+					System.out.println("Traj #" + map.get(i).getID());
+					for(int j = 0; j < map.get(i).getNeighbors().size(); j++){
+						System.out.println("#" + map.get(i).getNeighbors().get(j).getTraj().getID() + " at " + map.get(i).getNeighbors().get(j).getAngle());
+					}
+				}
+			}
 			
 			//load map button
 			if((arg0.getX() >= 220 && arg0.getX() <= 260) && (arg0.getY() >= 320 && arg0.getY() <= 360)){
@@ -929,7 +977,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					try {
 						Scanner scan = new Scanner(file);
 						map = new ArrayList<Trajectory>();
-						//listBot = new ArrayList<Robot>();
+						listBot = new ArrayList<Robot>();
 						while(scan.hasNext())
 						{
 							String first = scan.next();
@@ -1014,11 +1062,8 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			}
 			
 			//removes robot
-			for(int i = 0; i < listBot.size(); i++){
-				if(listBot.get(i).contains(new Coordinate(arg0.getX(), arg0.getY()))){
-					listBot.get(i).getTraj().removeBot(listBot.get(i));
-					listBot.remove(i);
-				}
+			if((arg0.getX() >= 220 && arg0.getX() <= 260) && (arg0.getY() >= 200 && arg0.getY() <= 240)){
+				listBot = new ArrayList<Robot>();
 			}
 			
 			
