@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 import javax.swing.Box;
@@ -216,6 +217,10 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			g2.drawString("210", 128 + trajSize/2, 760 + trajSize/2 - (int)(trajSize * (0.154)));
 			g2.drawString("225", 139 + trajSize/2, 818 + trajSize/2 - (int)(trajSize * (0.525)));
 			g2.drawString("240", 160 + trajSize/2, 836 + trajSize/2 - (int)(trajSize * (0.525)));
+			g2.drawString("270", 200 + trajSize/2, 844);
+			g2.drawString("300", 145 + trajSize/2 + (int)(trajSize * (0.952)), 837);
+			g2.drawString("315", 215 + trajSize/2 + (int)(trajSize * (0.525)), 824);
+			g2.drawString("330", 264 + trajSize/2 + (int)(trajSize * (0.154)), 798);
 		}
 		
 		//draws add trajectory button
@@ -702,7 +707,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				
 				
 				//displays neighbors
-				
+				/*
 				for(int i = 0; i < map.size(); i++){
 					System.out.println("Traj #" + map.get(i).getID() + " neighbors: ");
 					for(int j = 0; j < map.get(i).getNeighbors().size(); j++){
@@ -710,7 +715,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					}
 				}
 				System.out.println();
-				
+				*/
 				
 			
 				
@@ -784,7 +789,9 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 							if(!existingTraj.getRobotList().isEmpty())
 							{
 								int ang = Math.abs(existingTraj.getRobotList().get(0).getAngle());
-								int newAng = AngleUtilities.coterminal(ang + 180);
+								int angNeigh = newTraj.angleFrom(existingTraj);
+								int distance = Math.abs(360 - ang + angNeigh);
+								int newAng = AngleUtilities.coterminal(existingTraj.angleFrom(newTraj) + distance);
 								int dir = existingTraj.getRobotList().get(0).getDirection();
 								if(dir == 1){
 									dir = -1;
@@ -943,19 +950,22 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 								
 								
 					
-								
-									//loop to set neighbors
-									for(int i = 0; i < map.size(); i++) {
-										if(traj.tangent(map.get(i))) {
-											TrajAnglePair tap1,tap2;
-											tap1 = new TrajAnglePair(map.get(i),traj.angleFrom(map.get(i)));
-											tap2 = new TrajAnglePair(traj,map.get(i).angleFrom(traj));
-											//System.out.println(newTraj.angleFrom(map.get(i)));
-											System.out.println(map.get(i).angleFrom(traj));
-											traj.addNeighbor(tap1);
-											map.get(i).addNeighbor(tap2);
-										}
+								//loop to set neighbors
+								for(int i = 0; i < map.size(); i++) {
+									if(traj.tangent(map.get(i))) {
+										
+										//newTraj.addNeighbor(map.get(i));
+										
+										
+										TrajAnglePair tap1,tap2;
+										tap1 = new TrajAnglePair(map.get(i), map.get(i).angleFrom(traj));
+										tap2 = new TrajAnglePair(traj, traj.angleFrom(map.get(i)));
+										//System.out.println("first: "  + newTraj.angleFrom(map.get(i)));
+										//System.out.println("second: " + map.get(i).angleFrom(newTraj));
+										traj.addNeighbor(tap1);
+										map.get(i).addNeighbor(tap2);
 									}
+								}
 								
 								
 								
@@ -995,6 +1005,8 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					} catch (FileNotFoundException e) {
 						System.out.println("File not found.");
 					} catch(NumberFormatException e){
+						
+					}catch(NoSuchElementException e){
 						
 					}
 					
