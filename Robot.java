@@ -19,12 +19,14 @@ public class Robot {
 	private boolean isoToggle;
 	private int wifiRange;
 	private final int checkingAngle  = 5;
+	private int ID;
 	
 	
 	public Robot( Trajectory traj, int ang, int dir)
 	{
+		ID = traj.getID();
 		direction = dir;
-		labelToggle = false;
+		labelToggle = true;
 		hasFlipped = false;
 		hasSensed = false;
 		t = traj;
@@ -143,7 +145,8 @@ public class Robot {
 	
 		g2.fill(new Ellipse2D.Double(t.getVertex().getX() + t.getSize()/2*Math.cos((Math.PI/180)*angle) - sizeR/2, t.getVertex().getY() - t.getSize()/2*Math.sin((Math.PI/180)*angle) - sizeR/2, sizeR, sizeR));//t.getSize()*Math.cos(angle)
 	
-		g2.draw(new Ellipse2D.Double(t.getVertex().getX() + t.getSize()/2*Math.cos((Math.PI/180)*angle) - (2*wifiRange + sizeR)/2, t.getVertex().getY() - t.getSize()/2*Math.sin((Math.PI/180)*angle) - (2*wifiRange + sizeR)/2, (2*wifiRange + sizeR), (2*wifiRange + sizeR)));
+		//dras range circle
+		//g2.draw(new Ellipse2D.Double(t.getVertex().getX() + t.getSize()/2*Math.cos((Math.PI/180)*angle) - (2*wifiRange + sizeR)/2, t.getVertex().getY() - t.getSize()/2*Math.sin((Math.PI/180)*angle) - (2*wifiRange + sizeR)/2, (2*wifiRange + sizeR), (2*wifiRange + sizeR)));
 		if(starving && isoToggle){
 			g2.setColor(Color.black);
 		}else{
@@ -155,7 +158,7 @@ public class Robot {
 		g2.setFont(font);
 		//g2.setStroke(new BasicStroke(sizeR/4));
 		if(labelToggle){
-		g2.drawString(startingX +","+startingY, (int)(t.getVertex().getX() + t.getSize()/2*Math.cos((Math.PI/180)*angle)-sizeR/6), (int)(t.getVertex().getY() - t.getSize()/2*Math.sin((Math.PI/180)*angle)+sizeR/6));
+		g2.drawString(ID + " ", (int)(t.getVertex().getX() + t.getSize()/2*Math.cos((Math.PI/180)*angle)-sizeR/6), (int)(t.getVertex().getY() - t.getSize()/2*Math.sin((Math.PI/180)*angle)+sizeR/6));
 		}
 	
 	}

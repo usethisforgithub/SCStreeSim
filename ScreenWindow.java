@@ -50,7 +50,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	private ArrayList<Trajectory> map;
 	
 	//toggles
-	private boolean addTrajToggle, resetMapToggle, pauseToggle, addDroneToggle, helpToggle, addTrajDroneToggle;
+	private boolean addTrajToggle, resetMapToggle, pauseToggle, addDroneToggle, helpToggle, addTrajDroneToggle, droneLabelToggle;
 	
 
 	
@@ -62,6 +62,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		trajIDIndex = 1;
 		addTrajToggle = false;
 		resetMapToggle = false;
+		droneLabelToggle = false;
 		
 		//adds the first trajectory to the map
 		trajSize = 100;
@@ -160,70 +161,6 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 						}
 					}
 					
-					
-					
-					
-					
-					
-					//checks to switch trajectories
-					/*
-					boolean loopFix = true;
-					for(int j = 0; j < listBot.get(i).getTraj().getNeighbors().size(); j++){
-						//counterclockwise
-						if(listBot.get(i).getDirection() == 1){
-							if(listBot.get(i).getAngle() == listBot.get(i).getTraj().getNeighbors().get(j).getAngle()){
-								
-								for(int k = 0; k < listBot.size(); k++){
-									if(k != i && listBot.get(i).inRange(listBot.get(k))){
-										
-										listBot.get(i).setHasSensed(true);
-									}
-								}
-								
-								if(!listBot.get(i).hasSensed() && loopFix){
-									
-									int critAngle = listBot.get(i).getTraj().getNeighbors().get(j).getAngle();
-									listBot.get(i).getTraj().removeBot(listBot.get(i));
-									listBot.get(i).setTrajectory(listBot.get(i).getTraj().getNeighbors().get(j).getTraj());
-									listBot.get(i).getTraj().addBot(listBot.get(i));
-									listBot.get(i).setAngle(listBot.get(i).getAngle()+180+2*(critAngle-listBot.get(i).getAngle()));
-									listBot.get(i).setDirection(-1);
-									listBot.get(i).setHasSensed(false);
-									j = -1;
-									loopFix = false;
-								}
-								listBot.get(i).setHasSensed(false);
-								
-							}
-						}else{//clockwise
-							if(listBot.get(i).getAngle() == listBot.get(i).getTraj().getNeighbors().get(j).getAngle()){
-								
-								for(int k = 0; k < listBot.size(); k++){
-									if(k != i && listBot.get(i).inRange(listBot.get(k))){
-										
-										listBot.get(i).setHasSensed(true);
-									}
-								}
-								
-								if(!listBot.get(i).hasSensed() && loopFix){
-									
-									int critAngle = listBot.get(i).getTraj().getNeighbors().get(j).getAngle();
-									listBot.get(i).getTraj().removeBot(listBot.get(i));
-									listBot.get(i).setTrajectory(listBot.get(i).getTraj().getNeighbors().get(j).getTraj());
-									listBot.get(i).getTraj().addBot(listBot.get(i));
-									listBot.get(i).setAngle(listBot.get(i).getAngle()+180+2*(critAngle-listBot.get(i).getAngle()));
-									listBot.get(i).setDirection(1);
-									listBot.get(i).setHasSensed(false);
-									j = -1;
-									loopFix = false;
-								}
-								listBot.get(i).setHasSensed(false);
-								
-								
-							}
-						}
-					}
-					*/
 				}
 			}
 			
@@ -371,21 +308,21 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					g2.drawString("show neighbors", 85, 285);
 				}
 				
-		//draws isolation button
+		//draws show id button
 				if(true){
 					
 					g2.setColor(Color.green);
 					g2.fillRect(220, 260, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Show Isolation", 270, 285);
+					g2.drawString("Show Ids", 270, 285);
 				}else{
 					
 					g2.setColor(Color.red);
 					g2.fillRect(220, 260, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Isolation off", 270, 345);
+					g2.drawString("Ids off", 270, 345);
 				}
 				
 				
@@ -1100,6 +1037,11 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			if((arg0.getX() >= 370 && arg0.getX() <= 390) && (arg0.getY() >= 40 && arg0.getY() <= 60))
 			{
 				helpToggle = !helpToggle;
+			}
+			
+			//id button
+			if((arg0.getX() >= 220 && arg0.getX() <= 260) && (arg0.getY() >= 260 && arg0.getY() <= 300)){
+				droneLabelToggle = !droneLabelToggle;
 			}
 			
 			
