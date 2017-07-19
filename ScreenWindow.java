@@ -135,7 +135,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 							}
 							
 							if(sensed){
-								System.out.println("sdfgasgag");
+								//System.out.println("sdfgasgag");
 							}
 							
 							
@@ -143,7 +143,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 							
 							
 							
-							System.out.println("switched from " + oldAngle + " to " + newAngle);
+							//System.out.println("switched from " + oldAngle + " to " + newAngle);
 							
 							if(listBot.get(i).getDirection() == 1){
 								listBot.get(i).setDirection(-1);
@@ -1021,6 +1021,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 							}
 						}
 						scan.close();
+						trajIDIndex = map.size();
 					} catch (FileNotFoundException e) {
 						System.out.println("File not found.");
 					} catch(NumberFormatException e){
@@ -1037,7 +1038,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				
 				ArrayList<String> list = new ArrayList<String>();
 				for(int i = 0; i < map.size(); i++){
-					for(int j = 0; j < map.get(i).getNeighbors().size(); j++){
+					for(int j = i; j < map.get(i).getNeighbors().size(); j++){
 						list.add(map.get(i).getID() + " - " + map.get(i).getNeighbors().get(j).getTraj().getID());
 					}
 				}
@@ -1049,8 +1050,19 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				}
 			    int rc = JOptionPane.showOptionDialog(null, "Choose an Edge to remove:", "Remove Edge",
 			        JOptionPane.PLAIN_MESSAGE, 0, null, buttons, buttons[0]);
-
-			    System.out.println(rc);
+			    int firstTraj = Integer.parseInt(list.get(rc).substring(0, 1));
+			    int secondTraj = Integer.parseInt(list.get(rc).substring(4, 5));
+			    
+			    //map.get(firstTraj - 1).removeNeighbor(tap);
+			    /*
+			    TrajAnglePair tap1,tap2;
+				tap1 = new TrajAnglePair(map.get(i), map.get(i).angleFrom(traj));
+				tap2 = new TrajAnglePair(traj, traj.angleFrom(map.get(i)));
+				//System.out.println("first: "  + newTraj.angleFrom(map.get(i)));
+				//System.out.println("second: " + map.get(i).angleFrom(newTraj));
+				traj.addNeighbor(tap1);
+				map.get(i).addNeighbor(tap2);
+				*/
 			}
 			
 			//removes robot

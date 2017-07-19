@@ -214,6 +214,11 @@ public class Trajectory {
 		
 	}
 	
+	public void removeNeighbor(TrajAnglePair tap)
+	{
+		neighbors.remove(tap);
+	}
+	
 	public void addNeighbor(TrajAnglePair tap) {
 		neighbors.add(tap);
 	}
