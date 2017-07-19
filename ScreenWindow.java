@@ -367,6 +367,16 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
 					g2.drawString("Load Map", 270, 345);
 				}
+				
+		//draws remove edge
+				if(true){
+					
+					g2.setColor(Color.ORANGE);
+					g2.fillRect(220, 820, 40, 40);
+					g2.setColor(Color.black);
+					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+					g2.drawString("Remove Edge", 270, 845);
+				}
 		
 		//draws help button
 			if(!helpToggle)
@@ -1020,6 +1030,27 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					}
 					
 				}
+			}
+			
+			//removes edge
+			if((arg0.getX() >= 220 && arg0.getX() <= 260) && (arg0.getY() >= 820 && arg0.getY() <= 860)){				
+				
+				ArrayList<String> list = new ArrayList<String>();
+				for(int i = 0; i < map.size(); i++){
+					for(int j = 0; j < map.get(i).getNeighbors().size(); j++){
+						list.add(map.get(i).getID() + " - " + map.get(i).getNeighbors().get(j).getTraj().getID());
+					}
+				}
+				
+				String[] buttons = new String[list.size()];
+				for(int i = 0; i < list.size(); i++)
+				{
+					buttons[i] = list.get(i);
+				}
+			    int rc = JOptionPane.showOptionDialog(null, "Choose an Edge to remove:", "Remove Edge",
+			        JOptionPane.PLAIN_MESSAGE, 0, null, buttons, buttons[0]);
+
+			    System.out.println(rc);
 			}
 			
 			//removes robot
