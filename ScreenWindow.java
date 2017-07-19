@@ -109,21 +109,11 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 					
 					for(int j = 0; j < listBot.get(i).getTraj().getNeighbors().size(); j++){
 						if(listBot.get(i).getAngle() == listBot.get(i).getTraj().getNeighbors().get(j).getAngle()){
-							boolean sensed = false;
-							for(int l = 0; l < listBot.size(); l++){
-								if(listBot.get(i).inRange(listBot.get(l)) && l != i){
-									sensed = true;
-								}
-							}
-							
-							
-							
-							
-							if(!sensed){
+							Trajectory tempTraj = listBot.get(i).getTraj().getNeighbors().get(j).getTraj();
 							
 							int oldAngle = listBot.get(i).getAngle();
 							
-							Trajectory tempTraj = listBot.get(i).getTraj().getNeighbors().get(j).getTraj();
+							
 							int newAngle= -9999999;
 							
 							for(int k = 0; k < tempTraj.getNeighbors().size();k++){
@@ -131,6 +121,26 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 									newAngle = tempTraj.getNeighbors().get(k).getAngle();
 								}
 							}
+							
+							
+							
+							boolean sensed = false;
+							for(int l = 0; l < tempTraj.getRobotList().size(); l++){
+								if(AngleUtilities.inRange(AngleUtilities.coterminal(newAngle -15), AngleUtilities.coterminal(newAngle +15), tempTraj.getRobotList().get(l).getAngle())){
+									//System.out.println("beg " + AngleUtilities.coterminal(newAngle -15));
+									
+									sensed = true;
+								}
+							}
+							
+							if(sensed){
+								System.out.println("sdfgasgag");
+							}
+							
+							
+							if(!sensed){
+							
+							
 							
 							System.out.println("switched from " + oldAngle + " to " + newAngle);
 							

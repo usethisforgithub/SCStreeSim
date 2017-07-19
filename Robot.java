@@ -50,6 +50,10 @@ public class Robot {
 		
 		double hypotenuse = Math.sqrt(leg1 * leg1 + leg2 * leg2);
 		
+		if(Math.ceil(hypotenuse) < wifiRange + sizeR/2){
+			System.out.println("#" + t.getID() +" detected #" + b.getTraj().getID());
+		}
+		
 		return Math.ceil(hypotenuse) < wifiRange + sizeR/2;
 	}
 	
@@ -139,6 +143,7 @@ public class Robot {
 	
 		g2.fill(new Ellipse2D.Double(t.getVertex().getX() + t.getSize()/2*Math.cos((Math.PI/180)*angle) - sizeR/2, t.getVertex().getY() - t.getSize()/2*Math.sin((Math.PI/180)*angle) - sizeR/2, sizeR, sizeR));//t.getSize()*Math.cos(angle)
 	
+		g2.draw(new Ellipse2D.Double(t.getVertex().getX() + t.getSize()/2*Math.cos((Math.PI/180)*angle) - (2*wifiRange + sizeR)/2, t.getVertex().getY() - t.getSize()/2*Math.sin((Math.PI/180)*angle) - (2*wifiRange + sizeR)/2, (2*wifiRange + sizeR), (2*wifiRange + sizeR)));
 		if(starving && isoToggle){
 			g2.setColor(Color.black);
 		}else{
