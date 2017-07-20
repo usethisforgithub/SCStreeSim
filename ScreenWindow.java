@@ -1033,13 +1033,36 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				}
 			}
 			
+			
 			//removes edge
 			if((arg0.getX() >= 220 && arg0.getX() <= 260) && (arg0.getY() >= 820 && arg0.getY() <= 860)){				
-				
+				try{
 				ArrayList<String> list = new ArrayList<String>();
+				ArrayList<Pair> check = new ArrayList<Pair>();
 				for(int i = 0; i < map.size(); i++){
-					for(int j = i; j < map.get(i).getNeighbors().size(); j++){
-						list.add(map.get(i).getID() + " - " + map.get(i).getNeighbors().get(j).getTraj().getID());
+					for(int j = 0; j < map.get(i).getNeighbors().size(); j++){
+						Pair p = new Pair(map.get(i).getID(), map.get(i).getNeighbors().get(j).getTraj().getID());
+						if(check.size() == 0)
+						{
+							check.add(p);
+							list.add(map.get(i).getID() + " - " + map.get(i).getNeighbors().get(j).getTraj().getID());	
+						}
+						else
+						{
+							boolean alreadyIn = false;
+							for(Pair pa : check)
+							{
+								if(p.isSame(pa))
+								{
+									alreadyIn = true;
+								}
+							}
+							if(alreadyIn == false)
+							{
+								check.add(p);
+								list.add(map.get(i).getID() + " - " + map.get(i).getNeighbors().get(j).getTraj().getID());	
+							}
+						}
 					}
 				}
 				
@@ -1050,20 +1073,36 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				}
 			    int rc = JOptionPane.showOptionDialog(null, "Choose an Edge to remove:", "Remove Edge",
 			        JOptionPane.PLAIN_MESSAGE, 0, null, buttons, buttons[0]);
-			    int firstTraj = Integer.parseInt(list.get(rc).substring(0, 1));
-			    int secondTraj = Integer.parseInt(list.get(rc).substring(4, 5));
 			    
-			    //map.get(firstTraj - 1).removeNeighbor(tap);
-			    /*
-			    TrajAnglePair tap1,tap2;
-				tap1 = new TrajAnglePair(map.get(i), map.get(i).angleFrom(traj));
-				tap2 = new TrajAnglePair(traj, traj.angleFrom(map.get(i)));
-				//System.out.println("first: "  + newTraj.angleFrom(map.get(i)));
-				//System.out.println("second: " + map.get(i).angleFrom(newTraj));
-				traj.addNeighbor(tap1);
-				map.get(i).addNeighbor(tap2);
-				*/
+			    int firstTrajID = Integer.parseInt(list.get(rc).substring(0, 1));
+			    int secondTrajID = Integer.parseInt(list.get(rc).substring(4, 5));
+			    
+			    Trajectory neigh = null;
+			    Trajectory traj = map.get(firstTrajID);
+			    for(int i = 0; i < traj.getNeighbors().size(); i ++)
+			    {
+			    	if(traj.getNeighbors().get(i).getTraj().getID() == secondTrajID)
+			    	{
+			    		neigh = traj.getNeighbors().get(i).getTraj();
+			    		traj.getNeighbors().remove(i);
+			    	}
+			    }
+			    
+			    traj = map.get(secondTrajID);
+			    for(int i = 0; i < traj.getNeighbors().size(); i ++)
+			    {
+			    	if(traj.getNeighbors().get(i).getTraj().getID() == firstTrajID)
+			    	{
+			    		neigh = traj.getNeighbors().get(i).getTraj();
+			    		traj.getNeighbors().remove(i);
+			    	}
+			    }
+				}
+				catch(ArrayIndexOutOfBoundsException e){
+					
+				}
 			}
+			
 			
 			//removes robot
 			if((arg0.getX() >= 220 && arg0.getX() <= 260) && (arg0.getY() >= 200 && arg0.getY() <= 240)){
