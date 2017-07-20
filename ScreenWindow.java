@@ -428,6 +428,10 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	@Override
 	public void windowClosed(WindowEvent arg0) {
 		// TODO Auto-generated method stub
+		
+		System.exit(0);
+		
+		/*
 		while(true){
 			if(isDone){
 				System.exit(0);
@@ -438,7 +442,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			}
 			
 		}
-		
+		*/
 	}
 
 	@Override
