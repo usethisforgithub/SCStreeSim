@@ -239,7 +239,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			g2.drawString("Add Trajectory", 85, 165);
 		}
 		
-		//draws add trajectory and drone button
+		//draws autofill and drone button
 			if(addTrajDroneToggle){
 				
 				g2.setColor(Color.blue);
@@ -253,8 +253,8 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				g2.fillRect(220, 140, 40, 40);
 				g2.setColor(Color.black);
 				g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-				g2.drawString("Add Trajectory", 275, 165);
-				g2.drawString("and drone", 290, 185);
+				g2.drawString("Autofill", 275, 165);
+				g2.drawString("", 290, 185);
 			}
 		
 		//draws pause button
@@ -737,135 +737,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			
 			//add traj and drone button 
 			if((arg0.getX() >= 220 && arg0.getX() <= 260) && (arg0.getY() >= 140 && arg0.getY() <= 180)){
-				if(!addTrajDroneToggle){
-					addTrajDroneToggle = true;
-					
-					JTextField aField = new JTextField(5);
-					JTextField bField = new JTextField(5);
-					JTextField cField = new JTextField(5);
-					JTextField dField = new JTextField(5);
-
-					JPanel myPanel = new JPanel();
-					myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
-
-					myPanel.add(new JLabel("Enter Angle:"));
-					myPanel.add(aField);
-
-					myPanel.add(Box.createVerticalStrut(15));
-
-					myPanel.add(new JLabel("Existing Trajectory's ID:"));
-					myPanel.add(bField);
-
-					myPanel.add(Box.createVerticalStrut(15));
-
-					
-					/*
-					myPanel.add(new JLabel("Enter initial direction of first trajectory"));
-					myPanel.add(new JLabel("-1 (clockwise) or 1 (counterclockwise):"));
-					myPanel.add(cField);
-
-					myPanel.add(Box.createVerticalStrut(15));
-
-					myPanel.add(new JLabel("Enter initial angle of first drone"));
-					myPanel.add(new JLabel("in radians between (0.00 - 6.28):"));
-					myPanel.add(dField); */
-
-					int result = JOptionPane.showConfirmDialog(null, myPanel, " Enter Values For New Trajectory", JOptionPane.OK_CANCEL_OPTION);
-					Trajectory existingTraj = null;
-					int tempInt = 0;
-					
-					if (result == JOptionPane.OK_OPTION) {
-						String temp1 = aField.getText();
-						String temp2 = bField.getText();
-						
-
-						if (!temp1.equals("") && !temp2.equals("")) {
-							double angle = Double.parseDouble(temp1);
-							
-							
-							for(Trajectory t : map){
-								tempInt = Integer.parseInt(temp2);
-								if(tempInt == t.getID()){
-									existingTraj = t;
-								}
-							}
-							
-							/*
-							int newDir = 1;
-							if(existingTraj.getDirection() > 0){
-								newDir = -1;
-							}
-							*/
-							Trajectory newTraj = new Trajectory (new Coordinate(existingTraj.getVertex().getX() + (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.cos((Math.PI/180)*angle), existingTraj.getVertex().getY() - (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.sin((Math.PI/180)*angle)),existingTraj.getSize(), trajIDIndex);
-							
-							//adds new bot
-							if(!existingTraj.getRobotList().isEmpty())
-							{
-								int ang = Math.abs(existingTraj.getRobotList().get(0).getAngle());
-								int angNeigh = newTraj.angleFrom(existingTraj);
-								int distance = Math.abs(360 - ang + angNeigh);
-								int newAng = AngleUtilities.coterminal(existingTraj.angleFrom(newTraj) + distance);
-								int dir = existingTraj.getRobotList().get(0).getDirection();
-								if(dir == 1){
-									dir = -1;
-								}else{
-									dir = 1;
-								}
-								Robot r = new Robot(newTraj, newAng, dir);
-								newTraj.addBot(r);
-								listBot.add(r);		
-							}
-									
-							boolean overlaps = false;
-							for(int i = 0; i < map.size(); i++)
-							{
-								if(!newTraj.overlaps(map.get(i))){
-									
-								}
-								else
-								{
-									System.out.println("Overlaps.");
-									overlaps = true;
-								}
-							}
-							if(!overlaps){
-								map.add(newTraj);
-								trajIDIndex++;
 				
-							
-								//loop to set neighbors
-								for(int i = 0; i < map.size(); i++) {
-									if(newTraj.tangent(map.get(i))) {
-										
-										//newTraj.addNeighbor(map.get(i));
-										
-										
-										
-										
-										TrajAnglePair tap1,tap2;
-										tap1 = new TrajAnglePair(map.get(i), map.get(i).angleFrom(newTraj));
-										tap2 = new TrajAnglePair(newTraj, newTraj.angleFrom(map.get(i)));
-										//System.out.println("first: "  + newTraj.angleFrom(map.get(i)));
-										//System.out.println("second: " + map.get(i).angleFrom(newTraj));
-										newTraj.addNeighbor(tap1);
-										map.get(i).addNeighbor(tap2);
-									}
-								}
-							
-							
-							
-							}
-							
-						}
-						else {
-							System.out.println("Field was left empty. New trajectory was not added.");
-						}
-						
-					}
-				
-					addTrajDroneToggle = false;
-				
-				}
 			}
 			
 			
