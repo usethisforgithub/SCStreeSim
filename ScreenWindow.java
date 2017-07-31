@@ -1002,6 +1002,11 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				droneLabelToggle = !droneLabelToggle;
 			}
 			
+			//autofill
+			if((arg0.getX() >= 220 && arg0.getX() <= 260) && (arg0.getY() >= 140 && arg0.getY() <= 180)){
+				System.out.println("autofill");
+			}
+			
 			
 		
 	}
