@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -50,7 +51,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 	private ArrayList<Trajectory> map;
 	
 	//toggles
-	private boolean addTrajToggle, resetMapToggle, pauseToggle, addDroneToggle, helpToggle, addTrajDroneToggle, droneLabelToggle;
+	private boolean addTrajToggle, resetMapToggle, pauseToggle, addDroneToggle, helpToggle, addTrajDroneToggle, droneLabelToggle, showEdgesToggle;
 	
 
 	
@@ -372,11 +373,39 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				if(true){
 					
 					g2.setColor(Color.ORANGE);
-					g2.fillRect(220, 820, 40, 40);
+					g2.fillRect(220, 380, 40, 40);
 					g2.setColor(Color.black);
 					g2.setFont(new Font("Callibri", Font.PLAIN, 16));
-					g2.drawString("Remove Edge", 270, 845);
+					g2.drawString("Remove Edge", 270, 405);
 				}
+				
+		//draws show edges
+			if(showEdgesToggle){
+				
+				g2.setColor(Color.ORANGE);
+				g2.fillRect(30, 380, 40, 40);
+				g2.setColor(Color.black);
+				g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+				g2.drawString("Edges Showing", 85, 405);
+				
+				for(Trajectory t: map)
+				{
+					for(int i = 0; i < t.getNeighbors().size(); i++)
+					{
+						g2.setColor(Color.red);
+						g2.drawLine(t.getVertex().getX(), t.getVertex().getY(), t.getNeighbors().get(i).getTraj().getVertex().getX(), t.getNeighbors().get(i).getTraj().getVertex().getY());
+					}
+				}
+				
+			}
+			else
+			{
+				g2.setColor(Color.yellow);
+				g2.fillRect(30, 380, 40, 40);
+				g2.setColor(Color.black);
+				g2.setFont(new Font("Callibri", Font.PLAIN, 16));
+				g2.drawString("Show Edges", 85, 405);
+			}
 		
 		//draws help button
 			if(!helpToggle)
@@ -903,9 +932,8 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				}
 			}
 			
-			
 			//removes edge
-			if((arg0.getX() >= 220 && arg0.getX() <= 260) && (arg0.getY() >= 820 && arg0.getY() <= 860)){				
+			if((arg0.getX() >= 220 && arg0.getX() <= 260) && (arg0.getY() >= 380 && arg0.getY() <= 420)){				
 				try{
 				ArrayList<String> list = new ArrayList<String>();
 				ArrayList<Pair> check = new ArrayList<Pair>();
@@ -1201,7 +1229,11 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				}
 						
 			}
-				
+			
+
+			if((arg0.getX() >= 30 && arg0.getX() <= 70) && (arg0.getY() >= 380 && arg0.getY() <= 420)){
+				showEdgesToggle = !showEdgesToggle;
+			}
 			
 			
 	}
