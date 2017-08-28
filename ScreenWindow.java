@@ -68,7 +68,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 		//adds the first trajectory to the map
 		trajSize = 100;
 		map = new ArrayList<Trajectory>();
-		map.add(new Trajectory(new Coordinate(1000,450), trajSize,0));
+		map.add(new Trajectory(new Coordinate(1000,450), trajSize,0, 1));
 		ghostTrajBuild = null;
 		
 	
@@ -688,13 +688,13 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 								}
 							}
 							
-							/*
+							
 							int newDir = 1;
-							if(existingTraj.getDirection() > 0){
+							if(existingTraj.getDir() > 0){
 								newDir = -1;
 							}
-							*/
-							Trajectory newTraj = new Trajectory (new Coordinate(existingTraj.getVertex().getX() + (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.cos((Math.PI/180)*angle), existingTraj.getVertex().getY() - (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.sin((Math.PI/180)*angle)),existingTraj.getSize(), trajIDIndex);
+							
+							Trajectory newTraj = new Trajectory (new Coordinate(existingTraj.getVertex().getX() + (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.cos((Math.PI/180)*angle), existingTraj.getVertex().getY() - (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.sin((Math.PI/180)*angle)),existingTraj.getSize(), trajIDIndex, newDir);
 							boolean overlaps = false;
 							for(int i = 0; i < map.size(); i++)
 							{
@@ -731,7 +731,24 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 									}
 								}
 							
-							
+								//checks for shared neighbors
+								for(int i = 0; i < newTraj.getNeighbors().size(); i++)
+								{
+									int trajDir = newTraj.getDir();
+									Trajectory tempTraj = newTraj.getNeighbors().get(i).getTraj();
+									int tempDir = tempTraj.getDir();
+									if(trajDir == tempDir)
+									{
+										newTraj.getNeighbors().remove(i);
+										for(int j = 0; j < tempTraj.getNeighbors().size(); j++)
+										{
+											if(tempTraj.getNeighbors().get(j).getTraj().getID() == newTraj.getID())
+											{
+												tempTraj.getNeighbors().remove(j);
+											}
+										}
+									}
+								}
 							
 							
 							}
@@ -770,7 +787,7 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 				if(!resetMapToggle){
 					resetMapToggle = true;
 					map = new ArrayList<Trajectory>();
-					map.add(new Trajectory(new Coordinate(1000,450), trajSize,0));
+					map.add(new Trajectory(new Coordinate(1000,450), trajSize,0, 1));
 					trajIDIndex = 1;
 					resetMapToggle = false;
 				}
@@ -800,6 +817,8 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 							bw.write(Integer.toString(t.getID()));
 							bw.newLine();
 							bw.write(t.getVertex().getX() + " " + t.getVertex().getY());
+							bw.newLine();
+							bw.write(t.getDir());
 							bw.newLine();
 						}
 						//bw.newLine();
@@ -862,7 +881,8 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 								double x = Double.parseDouble(scan.next());
 								double y = (double)scan.nextInt();
 								scan.nextLine();
-								Trajectory traj = new Trajectory(new Coordinate(x, y), trajSize, tempId);
+								int dir = scan.nextInt();
+								Trajectory traj = new Trajectory(new Coordinate(x, y), trajSize, tempId, dir);
 								map.add(traj);
 								
 								
@@ -1149,13 +1169,13 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 									}
 								}
 								
-								/*
+								
 								int newDir = 1;
-								if(existingTraj.getDirection() > 0){
+								if(existingTraj.getDir() > 0){
 									newDir = -1;
 								}
-								*/
-								Trajectory newTraj = new Trajectory (new Coordinate(existingTraj.getVertex().getX() + (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.cos((Math.PI/180)*angle), existingTraj.getVertex().getY() - (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.sin((Math.PI/180)*angle)),existingTraj.getSize(), trajIDIndex);
+								
+								Trajectory newTraj = new Trajectory (new Coordinate(existingTraj.getVertex().getX() + (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.cos((Math.PI/180)*angle), existingTraj.getVertex().getY() - (existingTraj.getSize()+(existingTraj.getSize()/6))*Math.sin((Math.PI/180)*angle)),existingTraj.getSize(), trajIDIndex, newDir);
 								boolean overlaps = false;
 								for(int i = 0; i < map.size(); i++)
 								{
