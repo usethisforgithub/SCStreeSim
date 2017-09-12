@@ -14,10 +14,11 @@ public class Trajectory {
 	private Arc arc3;
 	private Arc arc4;
 	private int trajID;
+	private int dir;
 	private boolean ghostReady;
 	private ArrayList<TrajAnglePair> neighbors;
 	
-	public Trajectory(Coordinate v, int s, int id)
+	public Trajectory(Coordinate v, int s, int id, int d)
 	{
 		neighbors = new ArrayList<TrajAnglePair>();
 		ghostReady = false;
@@ -29,10 +30,15 @@ public class Trajectory {
 		vertex = v;
 		sizeT = s;
 		trajID = id;
+		dir = d;
 	}
 	
 	public int getID(){
 		return trajID;
+	}
+	
+	public int getDir(){
+		return dir;
 	}
 	
 	public void setColor(Color c){

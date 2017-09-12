@@ -732,14 +732,38 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 								}
 							
 								//checks for shared neighbors
+								//pentagon: 108 36 324 253
 								for(int i = 0; i < newTraj.getNeighbors().size(); i++)
 								{
 									int trajDir = newTraj.getDir();
+									//other traj
 									Trajectory tempTraj = newTraj.getNeighbors().get(i).getTraj();
 									int tempDir = tempTraj.getDir();
+									int highest = 0;
 									if(trajDir == tempDir)
 									{
-										newTraj.getNeighbors().remove(i);
+										for(int k = 0; k < newTraj.getNeighbors().size(); k++)
+										{
+											if(trajDir == tempDir)
+											{
+												if(newTraj.getNeighbors().get(k).getTraj().getID() > highest)
+												{
+													highest = newTraj.getNeighbors().get(k).getTraj().getID();
+												}
+											}
+										}
+										
+										//gets rid of neighbor from new traj
+										for(int t = 0; t < newTraj.getNeighbors().size(); t++)
+										{
+											if(newTraj.getNeighbors().get(t).getTraj().getID() == highest)
+											{
+												tempTraj = newTraj.getNeighbors().get(t).getTraj();
+												newTraj.getNeighbors().remove(t);
+											}
+										}
+										
+										//gets rid of neighbor from other traj
 										for(int j = 0; j < tempTraj.getNeighbors().size(); j++)
 										{
 											if(tempTraj.getNeighbors().get(j).getTraj().getID() == newTraj.getID())
@@ -747,6 +771,8 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 												tempTraj.getNeighbors().remove(j);
 											}
 										}
+										
+										
 									}
 								}
 							
@@ -1024,7 +1050,64 @@ public class ScreenWindow extends Frame implements WindowListener, Runnable, Key
 			
 			//removes robot
 			if((arg0.getX() >= 220 && arg0.getX() <= 260) && (arg0.getY() >= 200 && arg0.getY() <= 240)){
-				listBot = new ArrayList<Robot>();
+				try{
+					ArrayList<String> list = new ArrayList<String>();
+					list.add("Remove all bots");
+					list.add("Remove bots in trajectory");
+					
+					String[] buttons = new String[list.size()];
+					for(int i = 0; i < list.size(); i++)
+					{
+						buttons[i] = list.get(i);
+					}
+				    int rc = JOptionPane.showOptionDialog(null, "Choose an option:", "Remove Bot",
+				        JOptionPane.PLAIN_MESSAGE, 0, null, buttons, buttons[0]);
+				    if(rc == 0)
+				    {
+				    	listBot = new ArrayList<Robot>();
+				    }
+				    if(rc == 1)
+				    {
+				    	JTextField aField = new JTextField(5);
+
+						JPanel myPanel = new JPanel();
+						myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
+
+						myPanel.add(new JLabel("Enter Trajectory:"));
+						myPanel.add(aField);
+
+						int result = JOptionPane.showConfirmDialog(null, myPanel, " Enter Values", JOptionPane.OK_CANCEL_OPTION);
+						
+						if (result == JOptionPane.OK_OPTION) {
+							String temp1 = aField.getText();
+							ArrayList<Robot> botsToRemove = new ArrayList<Robot>();
+							for(int i = 0; i < map.get(Integer.parseInt(temp1)).getRobotList().size(); i++)
+							{
+								botsToRemove.add(map.get(Integer.parseInt(temp1)).getRobotList().get(i));
+							}
+							for(int n = 0; n < map.get(Integer.parseInt(temp1)).getRobotList().size(); n++)
+							{
+								map.get(Integer.parseInt(temp1)).getRobotList().remove(n);
+							}
+							for(int j = 0; j < listBot.size(); j++)
+							{
+								for(int k = 0; k < botsToRemove.size(); k++)
+								{
+									if(botsToRemove.get(k).equals(listBot.get(j)))
+									{
+										listBot.remove(j);
+									}
+								}
+							}
+						}
+				    }
+				}
+				catch(IndexOutOfBoundsException e){
+					
+				}
+				catch(NullPointerException e){
+					
+				}
 			}
 			
 			
