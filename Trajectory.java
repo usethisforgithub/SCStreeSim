@@ -41,6 +41,54 @@ public class Trajectory {
 		return dir;
 	}
 	
+	public void checksNeighbors(Trajectory newTraj)
+	{
+		//checks for shared neighbors
+		//pentagon: 108 36 324 253
+		for(int i = 0; i < newTraj.getNeighbors().size(); i++)
+		{
+			int trajDir = newTraj.getDir();
+			//other traj
+			Trajectory tempTraj = newTraj.getNeighbors().get(i).getTraj();
+			int tempDir = tempTraj.getDir();
+			int highest = 0;
+			if(trajDir == tempDir)
+			{
+				for(int k = 0; k < newTraj.getNeighbors().size(); k++)
+				{
+					if(trajDir == tempDir)
+					{
+						if(newTraj.getNeighbors().get(k).getTraj().getID() > highest)
+						{
+							highest = newTraj.getNeighbors().get(k).getTraj().getID();
+						}
+					}
+				}
+				
+				//gets rid of neighbor from new traj
+				for(int t = 0; t < newTraj.getNeighbors().size(); t++)
+				{
+					if(newTraj.getNeighbors().get(t).getTraj().getID() == highest)
+					{
+						tempTraj = newTraj.getNeighbors().get(t).getTraj();
+						newTraj.getNeighbors().remove(t);
+					}
+				}
+				
+				//gets rid of neighbor from other traj
+				for(int j = 0; j < tempTraj.getNeighbors().size(); j++)
+				{
+					if(tempTraj.getNeighbors().get(j).getTraj().getID() == newTraj.getID())
+					{
+						tempTraj.getNeighbors().remove(j);
+					}
+				}
+				
+				
+			}
+		}
+	}
+	
 	public void setColor(Color c){
 		arc1.setColor(c);
 		arc2.setColor(c);
